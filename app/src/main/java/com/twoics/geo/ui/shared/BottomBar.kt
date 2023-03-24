@@ -1,12 +1,17 @@
 package com.twoics.geo.ui.shared
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 
 private data class NavigationData(
     val titles: List<String> = listOf("Search", "Bookmarks"),
@@ -34,7 +39,11 @@ private fun Navigation() {
 @Composable
 @Preview
 fun BottomBar() {
-    return BottomAppBar {
+    return BottomAppBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp))
+    ) {
         Navigation()
     }
 }
