@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 private data class NavigationData(
     val titles: List<String> = listOf("Search", "Bookmarks"),
@@ -16,7 +16,7 @@ private data class NavigationData(
 )
 
 @Composable
-private fun Navigation() {
+private fun Navigation(navController: NavController) {
     var selectedItem by remember { mutableStateOf(0) }
     val navigationData = NavigationData()
 
@@ -26,7 +26,15 @@ private fun Navigation() {
                 icon = { Icon(navigationData.icons[index], contentDescription = null) },
                 label = { Text(item) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index }
+                onClick = {
+                    selectedItem = index
+                    if (item == "Search") {
+                        navController.navigate("main")
+                    } else {
+
+                        navController.navigate("bookmarks")
+                    }
+                }
             )
         }
     }
@@ -34,12 +42,11 @@ private fun Navigation() {
 
 
 @Composable
-@Preview
-fun BottomBar() {
+fun BottomBar(navController: NavController) {
     return BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Navigation()
+        Navigation(navController)
     }
 }

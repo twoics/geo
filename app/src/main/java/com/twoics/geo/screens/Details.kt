@@ -1,21 +1,23 @@
 package com.twoics.geo.screens
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.twoics.geo.R
 import com.twoics.geo.components.AppBar
 import com.twoics.geo.components.BottomBar
@@ -23,7 +25,7 @@ import com.twoics.geo.components.BottomBar
 
 //@Preview
 @Composable
-fun SheetContent() {
+fun SheetContent(navController: NavController) {
     BoxWithConstraints {
         val boxMaxScopes = this
 
@@ -71,7 +73,9 @@ fun SheetContent() {
 //                        backgroundColor = Color.White,
                             elevation = ButtonDefaults.elevation(0.dp, 0.dp),
 
-                            onClick = { }
+                            onClick = {
+                                navController.navigate("bookmarks")
+                            }
                         ) {
                             Icon(Icons.Filled.Favorite, contentDescription = null)
                         }
@@ -100,18 +104,17 @@ fun SheetContent() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview
-fun Details() {
+fun Details(navController: NavController) {
     MaterialTheme {
         BoxWithConstraints {
             val boxScopes = this
 
             Scaffold(
                 topBar = {
-                    AppBar()
+                    AppBar("main", navController)
                 },
                 bottomBar = {
-                    BottomBar()
+                    BottomBar(navController)
                 }
 
             ) { contentPadding ->
@@ -126,7 +129,7 @@ fun Details() {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            SheetContent()
+                            SheetContent(navController)
                         },
 
                         sheetPeekHeight = boxScopes.maxWidth * 0.52f,

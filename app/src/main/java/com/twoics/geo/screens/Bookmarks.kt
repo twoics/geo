@@ -12,23 +12,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.twoics.geo.components.AppBar
 import com.twoics.geo.components.BottomBar
 
 
 @Composable
-@Preview
-private fun BookmarkItem() {
+private fun BookmarkItem(navController: NavController) {
     BoxWithConstraints {
         val boxMaxScopes = this
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(boxMaxScopes.maxWidth * 0.04f)
-                .clickable { },
+                .clickable {
+                           navController.navigate("details")
+                },
             elevation = boxMaxScopes.maxWidth * 0.03f,
             shape = RoundedCornerShape(boxMaxScopes.maxWidth * 0.04f)
         ) {
@@ -84,39 +85,39 @@ private fun BookmarkItem() {
 }
 
 @Composable
-fun BookmarkList() {
+fun BookmarkList(navController: NavController) {
     return LazyColumn(
         modifier = Modifier.fillMaxHeight()
     ) {
         item {
-            BookmarkItem()
+            BookmarkItem(navController)
         }
         item {
-            BookmarkItem()
-        }
-
-        item {
-            BookmarkItem()
-        }
-        item {
-            BookmarkItem()
-        }
-        item {
-            BookmarkItem()
+            BookmarkItem(navController)
         }
 
         item {
-            BookmarkItem()
+            BookmarkItem(navController)
         }
         item {
-            BookmarkItem()
+            BookmarkItem(navController)
         }
         item {
-            BookmarkItem()
+            BookmarkItem(navController)
         }
 
         item {
-            BookmarkItem()
+            BookmarkItem(navController)
+        }
+        item {
+            BookmarkItem(navController)
+        }
+        item {
+            BookmarkItem(navController)
+        }
+
+        item {
+            BookmarkItem(navController)
         }
 
     }
@@ -124,20 +125,22 @@ fun BookmarkList() {
 
 
 @Composable
-@Preview
-fun Bookmarks() {
+//@Preview
+fun Bookmarks(
+    navController: NavController
+) {
     MaterialTheme {
         Scaffold(
             topBar = {
-                AppBar()
+                AppBar("main", navController)
             },
             bottomBar = {
-                BottomBar()
+                BottomBar(navController)
             }
         ) { contentPadding ->
             // Screen content
             Box(modifier = Modifier.padding(contentPadding)) {
-                BookmarkList()
+                BookmarkList(navController)
             }
         }
     }

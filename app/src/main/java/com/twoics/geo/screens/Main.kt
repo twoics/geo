@@ -15,9 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.twoics.geo.R
 import com.twoics.geo.components.AppBar
 import com.twoics.geo.components.BottomBar
@@ -73,7 +73,7 @@ private fun FilterItem(
 }
 
 @Composable
-private fun MainContent() {
+private fun MainContent(navController: NavController) {
     BoxWithConstraints {
         val boxMaxScopes = this
 
@@ -158,7 +158,9 @@ private fun MainContent() {
                 }
 
                 ExtendedFloatingActionButton(
-                    onClick = { /* ... */ },
+                    onClick = {
+                        navController.navigate("details")
+                    },
                     icon = {
                         Icon(
                             Icons.Filled.Search,
@@ -175,18 +177,17 @@ private fun MainContent() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview
-fun Main() {
+fun Main(navController: NavController) {
     MaterialTheme {
         BoxWithConstraints {
             val boxMaxScopes = this
 
             Scaffold(
                 topBar = {
-                    AppBar()
+                    AppBar("main", navController)
                 },
                 bottomBar = {
-                    BottomBar()
+                    BottomBar(navController)
                 }
 
             ) { contentPadding ->
@@ -204,7 +205,7 @@ fun Main() {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            MainContent()
+                            MainContent(navController)
                         },
                         sheetPeekHeight = boxMaxScopes.maxWidth * 0.3f,
                         sheetShape = RoundedCornerShape(
