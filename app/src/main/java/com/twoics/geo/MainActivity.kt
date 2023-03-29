@@ -10,7 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.twoics.geo.ui.screens.Bookmarks
+import com.twoics.geo.screens.Bookmarks
 import com.twoics.geo.ui.theme.GeoTheme
 
 class MainActivity : ComponentActivity() {
