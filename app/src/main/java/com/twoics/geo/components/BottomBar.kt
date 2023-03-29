@@ -1,4 +1,4 @@
-package com.twoics.geo.ui.shared
+package com.twoics.geo.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*

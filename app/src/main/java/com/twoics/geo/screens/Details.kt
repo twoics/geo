@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.R
-import com.twoics.geo.ui.shared.AppBar
-import com.twoics.geo.ui.shared.BottomBar
+import com.twoics.geo.components.AppBar
+import com.twoics.geo.components.BottomBar
 
 
 //@Preview
