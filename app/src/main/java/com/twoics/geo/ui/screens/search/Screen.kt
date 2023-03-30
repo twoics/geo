@@ -1,4 +1,4 @@
-package com.twoics.geo.screens
+package com.twoics.geo.ui.screens.search
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.twoics.geo.R
-import com.twoics.geo.components.AppBar
-import com.twoics.geo.components.BottomBar
+import com.twoics.geo.ui.shared.AppBar
+import com.twoics.geo.ui.shared.BottomBar
 
 @Composable
 private fun FilterItem(

@@ -1,4 +1,4 @@
-package com.twoics.geo.screens
+package com.twoics.geo.ui.screens.bookmarks
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.twoics.geo.components.AppBar
-import com.twoics.geo.components.BottomBar
+import com.twoics.geo.ui.shared.AppBar
+import com.twoics.geo.ui.shared.BottomBar
 
 
 @Composable
@@ -28,7 +28,7 @@ private fun BookmarkItem(navController: NavController) {
                 .fillMaxWidth()
                 .padding(boxMaxScopes.maxWidth * 0.04f)
                 .clickable {
-                           navController.navigate("details")
+                    navController.navigate("details")
                 },
             elevation = boxMaxScopes.maxWidth * 0.03f,
             shape = RoundedCornerShape(boxMaxScopes.maxWidth * 0.04f)
@@ -126,10 +126,10 @@ fun BookmarkList(navController: NavController) {
 
 @Composable
 //@Preview
-fun Bookmarks(
+fun BookmarksScreen(
     navController: NavController
 ) {
-    MaterialTheme {
+    return MaterialTheme {
         Scaffold(
             topBar = {
                 AppBar("main", navController)

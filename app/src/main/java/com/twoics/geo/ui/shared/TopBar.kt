@@ -1,4 +1,4 @@
-package com.twoics.geo.components
+package com.twoics.geo.ui.shared
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +28,5 @@ fun AppBar(backRoute: String, navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
         )
-
     }
 }
