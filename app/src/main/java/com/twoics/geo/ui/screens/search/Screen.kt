@@ -177,17 +177,17 @@ private fun MainContent(navController: NavController) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Main(navController: NavController) {
+fun SearchScreen(navController: NavController) {
     MaterialTheme {
         BoxWithConstraints {
             val boxMaxScopes = this
 
             Scaffold(
                 topBar = {
-                    AppBar("main", navController)
+                    AppBar()
                 },
                 bottomBar = {
-                    BottomBar(navController)
+                    BottomBar()
                 }
 
             ) { contentPadding ->

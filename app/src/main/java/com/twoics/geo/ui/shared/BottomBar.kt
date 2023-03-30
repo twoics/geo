@@ -42,11 +42,11 @@ private fun Navigation(navController: NavController) {
 
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar() {
     return BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Navigation(navController)
+//        Navigation(navController)
     }
 }

@@ -10,17 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 
 @Composable
 //@Preview
-fun AppBar(backRoute: String, navController: NavController) {
+fun AppBar() {
     Column {
         TopAppBar(title = {
             Text("App bar")
         }, navigationIcon = {
             IconButton(onClick = {
-                navController.navigate(backRoute)
+//                navController.navigate(backRoute)
             }) {
                 Icon(Icons.Filled.ArrowBack, null)
             }

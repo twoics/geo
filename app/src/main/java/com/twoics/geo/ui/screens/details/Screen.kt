@@ -104,17 +104,17 @@ fun SheetContent(navController: NavController) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Details(navController: NavController) {
+fun DetailsScreen(navController: NavController) {
     MaterialTheme {
         BoxWithConstraints {
             val boxScopes = this
 
             Scaffold(
                 topBar = {
-                    AppBar("main", navController)
+                    AppBar()
                 },
                 bottomBar = {
-                    BottomBar(navController)
+                    BottomBar()
                 }
 
             ) { contentPadding ->
