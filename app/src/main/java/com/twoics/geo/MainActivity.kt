@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController, startDestination = "main") {
                         composable("main") { SearchScreen(navController) }
                         composable("bookmarks") { BookmarksScreen() }
-                        composable("details") { DetailsScreen(navController) }
+                        composable("details") { DetailsScreen() }
                     }
                 }
             }

@@ -15,19 +15,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.twoics.geo.R
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 
-
 //@Preview
 @Composable
-fun SheetContent(navController: NavController) {
+fun SheetContent() {
     BoxWithConstraints {
-        val boxMaxScopes = this
+        val sizes = DetailScreenConfiguration(this.maxWidth)
 
         Card(
             modifier = Modifier
@@ -37,17 +36,17 @@ fun SheetContent(navController: NavController) {
         ) {
             Column {
                 Row(
-                    Modifier.padding(boxMaxScopes.maxWidth * 0.03f)
+                    Modifier.padding(sizes.contentWidth)
                 ) {
                     Column(
-                        modifier = Modifier.padding(0.dp, 0.dp, boxMaxScopes.maxWidth * 0.03f, 0.dp),
+                        modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
                         horizontalAlignment = Alignment.Start
                     ) {
                         Icon(
                             painter = painterResource(id = com.twoics.geo.R.drawable.arch),
 //                        Icons.Filled.AccountBox,
                             tint = Color.Unspecified,
-                            modifier = Modifier.size(boxMaxScopes.maxWidth * 0.12f),
+                            modifier = Modifier.size(sizes.iconSize),
                             contentDescription = null
                         )
                     }
@@ -74,7 +73,7 @@ fun SheetContent(navController: NavController) {
                             elevation = ButtonDefaults.elevation(0.dp, 0.dp),
 
                             onClick = {
-                                navController.navigate("bookmarks")
+//                                navController.navigate("bookmarks")
                             }
                         ) {
                             Icon(Icons.Filled.Favorite, contentDescription = null)
@@ -82,7 +81,7 @@ fun SheetContent(navController: NavController) {
                     }
                 }
                 Text(
-                    modifier = Modifier.padding(boxMaxScopes.maxWidth * 0.03f),
+                    modifier = Modifier.padding(sizes.descriptionTitlePadding),
                     text = "Description",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold
@@ -94,20 +93,20 @@ fun SheetContent(navController: NavController) {
                     color = Color.Gray,
                     modifier = Modifier
                         .verticalScroll(scroll)
-                        .padding(boxMaxScopes.maxWidth * 0.04f)
+                        .padding(sizes.descriptionContentPadding)
                 )
             }
         }
-
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun DetailsScreen(navController: NavController) {
+@Preview
+fun DetailsScreen() {
     MaterialTheme {
         BoxWithConstraints {
-            val boxScopes = this
+            val sizes = DetailScreenConfiguration(this.maxWidth)
 
             Scaffold(
                 topBar = {
@@ -129,13 +128,13 @@ fun DetailsScreen(navController: NavController) {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            SheetContent(navController)
+                            SheetContent()
                         },
 
-                        sheetPeekHeight = boxScopes.maxWidth * 0.52f,
+                        sheetPeekHeight = sizes.sheetPeakHeight,
                         sheetShape = RoundedCornerShape(
-                            boxScopes.maxWidth * 0.05f,
-                            boxScopes.maxWidth * 0.05f,
+                            sizes.sheetCorner,
+                            sizes.sheetCorner,
                             0.dp,
                             0.dp
                         ),

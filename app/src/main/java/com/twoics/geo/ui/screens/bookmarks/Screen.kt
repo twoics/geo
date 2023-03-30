@@ -21,7 +21,7 @@ import com.twoics.geo.ui.shared.BottomBar
 @Composable
 private fun Bookmarks() {
     BoxWithConstraints {
-        val sizes = ScreenConfiguration(this.maxWidth)
+        val sizes = BookmarksScreenConfiguration(this.maxWidth)
 
         LazyColumn(
             modifier = Modifier.fillMaxHeight()

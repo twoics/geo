@@ -2,7 +2,7 @@ package com.twoics.geo.ui.screens.bookmarks
 
 import androidx.compose.ui.unit.Dp
 
-class ScreenConfiguration(screenWidth: Dp) {
+class BookmarksScreenConfiguration(screenWidth: Dp) {
     private var _maxWidth: Dp
 
     private val _cardPaddingShare: Float = 0.04f
@@ -13,6 +13,10 @@ class ScreenConfiguration(screenWidth: Dp) {
     private val _iconRightPaddingShare: Float = 0.02f
     private val _iconSizeShare: Float = 0.07f
     private val _contentWidthShare: Float = 0.6f
+
+    init {
+        this._maxWidth = screenWidth
+    }
 
     val cardPadding: Dp
         get() = _maxWidth * _cardPaddingShare
@@ -37,8 +41,4 @@ class ScreenConfiguration(screenWidth: Dp) {
 
     val contentWidth: Dp
         get() = _maxWidth * _contentWidthShare
-
-    init {
-        this._maxWidth = screenWidth
-    }
 }
