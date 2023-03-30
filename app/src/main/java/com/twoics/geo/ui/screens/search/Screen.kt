@@ -15,12 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.twoics.geo.R
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
+
 
 @Composable
 private fun FilterItem(
@@ -29,11 +30,12 @@ private fun FilterItem(
     backgroundColor: Color,
     parentWidth: Dp
 ) {
+    val sizes = SearchScreenConfiguration(parentWidth)
     BoxWithConstraints(
         modifier = Modifier
             .shadow(
-                elevation = parentWidth * 0.04f,
-                shape = RoundedCornerShape(parentWidth * 0.01f),
+                elevation = sizes.filterButtonShadowElevation,
+                shape = RoundedCornerShape(sizes.filterButtonShadowCorner),
                 ambientColor = backgroundColor,
                 spotColor = backgroundColor
             )
@@ -41,8 +43,8 @@ private fun FilterItem(
 
         Column(
             Modifier
-                .padding(parentWidth * 0.03f, parentWidth * 0.01f)
-                .size(parentWidth * 0.16f, parentWidth * 0.19f),
+                .padding(sizes.filterButtonHorizontalPadding, sizes.filterButtonVerticalPadding)
+                .size(sizes.filterButtonWidth, sizes.filterButtonHeight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -57,14 +59,14 @@ private fun FilterItem(
                     contentColor = backgroundColor
                 ),
                 modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(parentWidth * 0.04f),
+                shape = RoundedCornerShape(sizes.filterButtonCorner),
                 border = if (selected.value) BorderStroke(1.dp, Color.Black) else null
 
             ) {
                 Icon(
                     icon,
                     tint = Color.Unspecified,
-                    modifier = Modifier.size(parentWidth * 0.1f),
+                    modifier = Modifier.size(sizes.filterButtonIcon),
                     contentDescription = null
                 )
             }
@@ -73,14 +75,14 @@ private fun FilterItem(
 }
 
 @Composable
-private fun MainContent(navController: NavController) {
+private fun SheetContent() {
     BoxWithConstraints {
-        val boxMaxScopes = this
+        val sizes = SearchScreenConfiguration(this.maxWidth)
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.4f)
+                .fillMaxHeight(sizes.sheetMaxHeight)
                 .shadow(25.dp),
             backgroundColor = Color.White
         ) {
@@ -92,10 +94,10 @@ private fun MainContent(navController: NavController) {
                     Modifier
                         .fillMaxWidth()
                         .padding(
-                            boxMaxScopes.maxWidth * 0.05f,
-                            boxMaxScopes.maxWidth * 0.03f,
-                            boxMaxScopes.maxWidth * 0.05f,
-                            boxMaxScopes.maxWidth * 0.03f
+                            sizes.sliderHorizontalPadding,
+                            sizes.buttonsVerticalPadding,
+                            sizes.sliderHorizontalPadding,
+                            sizes.buttonsVerticalPadding
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -103,34 +105,34 @@ private fun MainContent(navController: NavController) {
                         icon = painterResource(id = R.drawable.arch),
                         name = "Culture",
                         backgroundColor = Color(0xFFFFE9E9),
-                        parentWidth = boxMaxScopes.maxWidth
+                        parentWidth = sizes.maxWidth
                     )
                     FilterItem(
                         icon = painterResource(id = R.drawable.food),
                         name = "Food",
                         backgroundColor = Color(0xFFFFF4E8),
-                        parentWidth = boxMaxScopes.maxWidth
+                        parentWidth = sizes.maxWidth
                     )
                     FilterItem(
                         icon = painterResource(id = R.drawable.nature),
                         name = "Nature",
                         backgroundColor = Color(0xFFEAFFF2),
-                        parentWidth = boxMaxScopes.maxWidth
+                        parentWidth = sizes.maxWidth
                     )
                     FilterItem(
                         icon = painterResource(id = R.drawable.sport),
                         name = "Sport",
                         backgroundColor = Color(0xFFEEF7FF),
-                        parentWidth = boxMaxScopes.maxWidth
+                        parentWidth = sizes.maxWidth
                     )
                 }
                 Column(
-                    modifier = Modifier.padding(boxMaxScopes.maxWidth * 0.05f, 0.dp)
+                    modifier = Modifier.padding(sizes.sliderHorizontalPadding, 0.dp)
                 )
                 {
                     Text(
                         text = "Radius",
-                        modifier = Modifier.padding(0.dp, boxMaxScopes.maxWidth * 0.05f, 0.dp, 0.dp),
+                        modifier = Modifier.padding(0.dp, sizes.sliderHorizontalPadding, 0.dp, 0.dp),
                     )
                     var sliderPosition by remember { mutableStateOf(0f) }
                     Slider(
@@ -159,7 +161,7 @@ private fun MainContent(navController: NavController) {
 
                 ExtendedFloatingActionButton(
                     onClick = {
-                        navController.navigate("details")
+//                        navController.navigate("details")
                     },
                     icon = {
                         Icon(
@@ -177,10 +179,11 @@ private fun MainContent(navController: NavController) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SearchScreen(navController: NavController) {
+@Preview
+fun SearchScreen() {
     MaterialTheme {
         BoxWithConstraints {
-            val boxMaxScopes = this
+            val sizes = SearchScreenConfiguration(this.maxWidth)
 
             Scaffold(
                 topBar = {
@@ -205,12 +208,12 @@ fun SearchScreen(navController: NavController) {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            MainContent(navController)
+                            SheetContent()
                         },
-                        sheetPeekHeight = boxMaxScopes.maxWidth * 0.3f,
+                        sheetPeekHeight = sizes.sheetPeakHeight,
                         sheetShape = RoundedCornerShape(
-                            boxMaxScopes.maxWidth * 0.05f,
-                            boxMaxScopes.maxWidth * 0.05f,
+                            sizes.sheetCorner,
+                            sizes.sheetCorner,
                             0.dp,
                             0.dp
                         ),
@@ -225,7 +228,7 @@ fun SearchScreen(navController: NavController) {
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .fillMaxHeight(0.9f)
+                                    .fillMaxHeight(sizes.backgroundHeight)
                             )
                         }
                     }
