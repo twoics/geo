@@ -24,7 +24,7 @@ import com.twoics.geo.ui.shared.BottomBar
 
 
 @Composable
-private fun FilterItem(
+fun FilterButton(
     icon: Painter,
     name: String,
     backgroundColor: Color,
@@ -78,7 +78,6 @@ private fun FilterItem(
 private fun SheetContent() {
     BoxWithConstraints {
         val sizes = SearchScreenConfiguration(this.maxWidth)
-
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,25 +100,25 @@ private fun SheetContent() {
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    FilterItem(
+                    FilterButton(
                         icon = painterResource(id = R.drawable.arch),
                         name = "Culture",
                         backgroundColor = Color(0xFFFFE9E9),
                         parentWidth = sizes.maxWidth
                     )
-                    FilterItem(
+                    FilterButton(
                         icon = painterResource(id = R.drawable.food),
                         name = "Food",
                         backgroundColor = Color(0xFFFFF4E8),
                         parentWidth = sizes.maxWidth
                     )
-                    FilterItem(
+                    FilterButton(
                         icon = painterResource(id = R.drawable.nature),
                         name = "Nature",
                         backgroundColor = Color(0xFFEAFFF2),
                         parentWidth = sizes.maxWidth
                     )
-                    FilterItem(
+                    FilterButton(
                         icon = painterResource(id = R.drawable.sport),
                         name = "Sport",
                         backgroundColor = Color(0xFFEEF7FF),

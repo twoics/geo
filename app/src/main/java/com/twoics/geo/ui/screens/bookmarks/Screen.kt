@@ -18,91 +18,115 @@ import androidx.compose.ui.unit.sp
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 
+
 @Composable
-private fun Bookmarks() {
-    BoxWithConstraints {
-        val sizes = BookmarksScreenConfiguration(this.maxWidth)
-
-        LazyColumn(
-            modifier = Modifier.fillMaxHeight()
+private fun DeleteButton() {
+    Column(
+        Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
+        FloatingActionButton(
+            backgroundColor = Color.White,
+            contentColor = Color.Gray,
+            elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp),
+            onClick = { }
         ) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(sizes.cardPadding)
-                        .clickable { },
-                    elevation = sizes.cardElevation,
-                    shape = RoundedCornerShape(sizes.cardCorner)
-                ) {
-                    Row(
-                        Modifier
-                            .padding(sizes.rowPadding)
-                            .height(sizes.rowHeight),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column(
-                            Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp)
-                        ) {
-                            Icon(
-//                    painter = painterResource(id = com.twoics.geo.R.drawable.arch),
-                                Icons.Filled.AccountBox,
-                                tint = Color.Unspecified,
-                                modifier = Modifier.size(sizes.iconSize),
-                                contentDescription = null
-                            )
-                        }
-
-                        Column(
-                            modifier = Modifier.run { width(sizes.contentWidth) }
-                        ) {
-                            Text(
-                                text = "Театр кукол",
-                                fontSize = 18.sp,
-                            )
-                            Text(
-                                text = "Красноярск, Россия",
-                                fontSize = 16.sp,
-                                color = Color.Gray
-                            )
-                        }
-                        Column(
-                            Modifier
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            FloatingActionButton(
-                                backgroundColor = Color.White,
-                                contentColor = Color.Gray,
-                                elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp),
-                                onClick = { }
-                            ) {
-                                Icon(Icons.Filled.Delete, contentDescription = null)
-                            }
-                        }
-                    }
-                }
-            }
+            Icon(Icons.Filled.Delete, contentDescription = null)
         }
     }
 }
 
+@Composable
+private fun PlaceInfo(
+    name: String,
+    country: String,
+    city: String,
+    sizes: BookmarksScreenConfiguration
+) {
+    Column(
+        modifier = Modifier.run { width(sizes.contentWidth) }
+    ) {
+        Text(
+            text = name,
+            fontSize = 18.sp,
+        )
+        Text(
+            text = "$city, $country",
+            fontSize = 16.sp,
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+private fun TypeIcon(
+    // TODO Some Enum
+    sizes: BookmarksScreenConfiguration
+) {
+    Column(
+        Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp)
+    ) {
+        Icon(
+//                    painter = painterResource(id = com.twoics.geo.R.drawable.arch),
+            Icons.Filled.AccountBox,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(sizes.iconSize),
+            contentDescription = null
+        )
+    }
+
+}
 
 @Composable
 @Preview
 fun BookmarksScreen() {
     MaterialTheme {
-        Scaffold(
-            topBar = {
-                AppBar()
-            },
-            bottomBar = {
-                BottomBar()
-            }
-        ) { contentPadding ->
-            // Screen content
-            Box(modifier = Modifier.padding(contentPadding)) {
-                Bookmarks()
+        BoxWithConstraints {
+            val sizes = BookmarksScreenConfiguration(this.maxWidth)
+
+            Scaffold(
+                topBar = {
+                    AppBar()
+                },
+                bottomBar = {
+                    BottomBar()
+                }
+            ) { contentPadding ->
+                // Screen content
+                Box(modifier = Modifier.padding(contentPadding)) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(sizes.cardPadding)
+                                    .clickable { },
+                                elevation = sizes.cardElevation,
+                                shape = RoundedCornerShape(sizes.cardCorner)
+                            ) {
+                                Row(
+                                    Modifier
+                                        .padding(sizes.rowPadding)
+                                        .height(sizes.rowHeight),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+
+                                    TypeIcon(sizes)
+                                    PlaceInfo(
+                                        "Театр Кукол",
+                                        "Россия",
+                                        "Красноясрк",
+                                        sizes
+                                    )
+                                    DeleteButton()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
