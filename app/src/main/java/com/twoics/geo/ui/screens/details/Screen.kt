@@ -25,7 +25,7 @@ import com.twoics.geo.ui.shared.BottomBar
 @Composable
 private fun TypeIcon(
     // TODO Type enum
-    sizes: DetailScreenConfiguration
+    sizes: DetailScreenSizes
 ) {
     Column(
         modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
@@ -81,7 +81,7 @@ private fun LikeButton() {
 @Composable
 private fun Description(
     description: String,
-    sizes: DetailScreenConfiguration
+    sizes: DetailScreenSizes
 ) {
     Text(
         modifier = Modifier.padding(sizes.descriptionTitlePadding),
@@ -103,7 +103,7 @@ private fun Description(
 @Composable
 fun SheetContent() {
     BoxWithConstraints {
-        val sizes = DetailScreenConfiguration(this.maxWidth)
+        val sizes = DetailScreenSizes(this.maxWidth)
 
         Card(
             modifier = Modifier
@@ -157,7 +157,7 @@ private fun BackgroundContent() {
 fun DetailsScreen() {
     MaterialTheme {
         BoxWithConstraints {
-            val sizes = DetailScreenConfiguration(this.maxWidth)
+            val sizes = DetailScreenSizes(this.maxWidth)
 
             Scaffold(
                 topBar = {

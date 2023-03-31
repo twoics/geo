@@ -2,7 +2,7 @@ package com.twoics.geo.ui.screens.bookmarks
 
 import androidx.compose.ui.unit.Dp
 
-class BookmarksScreenConfiguration(screenWidth: Dp) {
+class BookmarksScreenSizes(screenWidth: Dp) {
     private var _maxWidth: Dp
 
     private val _cardPaddingShare: Float = 0.04f

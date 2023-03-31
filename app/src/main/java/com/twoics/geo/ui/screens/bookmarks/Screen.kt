@@ -42,7 +42,7 @@ private fun PlaceInfo(
     name: String,
     country: String,
     city: String,
-    sizes: BookmarksScreenConfiguration
+    sizes: BookmarksScreenSizes
 ) {
     Column(
         modifier = Modifier.run { width(sizes.contentWidth) }
@@ -62,7 +62,7 @@ private fun PlaceInfo(
 @Composable
 private fun TypeIcon(
     // TODO Some Enum
-    sizes: BookmarksScreenConfiguration
+    sizes: BookmarksScreenSizes
 ) {
     Column(
         Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp)
@@ -82,7 +82,7 @@ private fun TypeIcon(
 fun BookmarksScreen() {
     MaterialTheme {
         BoxWithConstraints {
-            val sizes = BookmarksScreenConfiguration(this.maxWidth)
+            val sizes = BookmarksScreenSizes(this.maxWidth)
 
             Scaffold(
                 topBar = {

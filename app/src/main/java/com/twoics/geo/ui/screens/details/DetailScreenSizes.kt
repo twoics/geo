@@ -2,7 +2,7 @@ package com.twoics.geo.ui.screens.details
 
 import androidx.compose.ui.unit.Dp
 
-class DetailScreenConfiguration(screenWidth: Dp) {
+class DetailScreenSizes(screenWidth: Dp) {
     private var _maxWidth: Dp
 
     private val _contentWidthShare: Float = 0.03f

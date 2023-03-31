@@ -29,7 +29,7 @@ fun FilterButton(
     backgroundColor: Color,
     parentWidth: Dp
 ) {
-    val sizes = SearchScreenConfiguration(parentWidth)
+    val sizes = SearchScreenSizes(parentWidth)
     Column(
         Modifier
             .padding(sizes.filterButtonHorizontalPadding, sizes.filterButtonVerticalPadding)
@@ -112,7 +112,7 @@ private fun SportButton(parentWidth: Dp) {
 }
 
 @Composable
-private fun RadiusSlider(sizes: SearchScreenConfiguration) {
+private fun RadiusSlider(sizes: SearchScreenSizes) {
     Column(
         modifier = Modifier.padding(sizes.sliderHorizontalPadding, 0.dp)
     )
@@ -167,7 +167,7 @@ private fun SearchButton() {
 @Composable
 private fun SheetContent() {
     BoxWithConstraints {
-        val sizes = SearchScreenConfiguration(this.maxWidth)
+        val sizes = SearchScreenSizes(this.maxWidth)
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,7 +204,7 @@ private fun SheetContent() {
 }
 
 @Composable
-private fun BackgroundContent(sizes: SearchScreenConfiguration) {
+private fun BackgroundContent(sizes: SearchScreenSizes) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -226,7 +226,7 @@ private fun BackgroundContent(sizes: SearchScreenConfiguration) {
 fun SearchScreen() {
     MaterialTheme {
         BoxWithConstraints {
-            val sizes = SearchScreenConfiguration(this.maxWidth)
+            val sizes = SearchScreenSizes(this.maxWidth)
 
             Scaffold(
                 topBar = {

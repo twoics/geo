@@ -2,7 +2,7 @@ package com.twoics.geo.ui.screens.search
 
 import androidx.compose.ui.unit.Dp
 
-class SearchScreenConfiguration(screenWidth: Dp) {
+class SearchScreenSizes(screenWidth: Dp) {
     private var _maxWidth: Dp
 
     private val _filterButtonHorizontalPaddingShare: Float = 0.03f
