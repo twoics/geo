@@ -5,8 +5,6 @@ import androidx.compose.ui.unit.Dp
 class SearchScreenConfiguration(screenWidth: Dp) {
     private var _maxWidth: Dp
 
-    private val _filterButtonShadowElevationShare: Float = 0.04f
-    private val _filterButtonShadowCornerShare: Float = 0.01f
     private val _filterButtonHorizontalPaddingShare: Float = 0.03f
     private val _filterButtonVerticalPaddingShare: Float = 0.01f
     private val _filterButtonWidthShare: Float = 0.16f
@@ -26,12 +24,6 @@ class SearchScreenConfiguration(screenWidth: Dp) {
     init {
         _maxWidth = screenWidth
     }
-
-    val filterButtonShadowElevation: Dp
-        get() = _maxWidth * _filterButtonShadowElevationShare
-
-    val filterButtonShadowCorner: Dp
-        get() = _maxWidth * _filterButtonShadowCornerShare
 
     val filterButtonHorizontalPadding: Dp
         get() = _maxWidth * _filterButtonHorizontalPaddingShare
