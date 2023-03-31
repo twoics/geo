@@ -75,7 +75,6 @@ private fun TypeIcon(
             contentDescription = null
         )
     }
-
 }
 
 @Composable

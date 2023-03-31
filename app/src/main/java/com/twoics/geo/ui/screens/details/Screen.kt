@@ -22,6 +22,83 @@ import com.twoics.geo.R
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 
+@Composable
+private fun TypeIcon(
+    // TODO Type enum
+    sizes: DetailScreenConfiguration
+) {
+    Column(
+        modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Icon(
+            painter = painterResource(id = com.twoics.geo.R.drawable.arch),
+            tint = Color.Unspecified,
+            modifier = Modifier.size(sizes.iconSize),
+            contentDescription = null
+        )
+    }
+}
+
+@Composable
+private fun PlaceInfo(
+    name: String,
+    city: String,
+    country: String
+) {
+    Column {
+        Text(
+            text = name,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "$country, $city",
+            fontSize = 16.sp,
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+private fun LikeButton() {
+    Column(
+        Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.End
+    ) {
+        Button(
+            elevation = ButtonDefaults.elevation(0.dp, 0.dp),
+
+            onClick = { }
+        ) {
+            Icon(Icons.Filled.Favorite, contentDescription = null)
+        }
+    }
+}
+
+
+@Composable
+private fun Description(
+    description: String,
+    sizes: DetailScreenConfiguration
+) {
+    Text(
+        modifier = Modifier.padding(sizes.descriptionTitlePadding),
+        text = "Description",
+        fontSize = 18.sp,
+        fontWeight = FontWeight.SemiBold
+    )
+    val scroll = rememberScrollState(0)
+    Text(
+        text = description,
+        color = Color.Gray,
+        modifier = Modifier
+            .verticalScroll(scroll)
+            .padding(sizes.descriptionContentPadding)
+    )
+}
+
 //@Preview
 @Composable
 fun SheetContent() {
@@ -38,65 +115,39 @@ fun SheetContent() {
                 Row(
                     Modifier.padding(sizes.contentWidth)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        Icon(
-                            painter = painterResource(id = com.twoics.geo.R.drawable.arch),
-//                        Icons.Filled.AccountBox,
-                            tint = Color.Unspecified,
-                            modifier = Modifier.size(sizes.iconSize),
-                            contentDescription = null
-                        )
-                    }
 
-                    Column {
-                        Text(
-                            text = "Театр кукол",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "Россия, Красноярск",
-                            fontSize = 16.sp,
-                            color = Color.Gray
-                        )
-                    }
-                    Column(
-                        Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        Button(
-//                        backgroundColor = Color.White,
-                            elevation = ButtonDefaults.elevation(0.dp, 0.dp),
+                    TypeIcon(sizes)
 
-                            onClick = {
-//                                navController.navigate("bookmarks")
-                            }
-                        ) {
-                            Icon(Icons.Filled.Favorite, contentDescription = null)
-                        }
-                    }
+                    PlaceInfo(
+                        name = "Театр кукол",
+                        country = "Россия",
+                        city = "Красноярск"
+                    )
+
+                    LikeButton()
                 }
-                Text(
-                    modifier = Modifier.padding(sizes.descriptionTitlePadding),
-                    text = "Description",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                val scroll = rememberScrollState(0)
-                Text(
-                    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-                            " Morbi ac massa vehicula magna fringilla tempus.Morbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempus..",
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .verticalScroll(scroll)
-                        .padding(sizes.descriptionContentPadding)
+
+                Description(
+                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit Morbi ac massa vehicula magna fringilla tempus.Morbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempus..",
+                    sizes = sizes
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun BackgroundContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        Image(
+            painterResource(R.drawable.backdata),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -139,17 +190,7 @@ fun DetailsScreen() {
                             0.dp
                         ),
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                        ) {
-                            Image(
-                                painterResource(R.drawable.backdata),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
+                        BackgroundContent()
                     }
                 }
             }
