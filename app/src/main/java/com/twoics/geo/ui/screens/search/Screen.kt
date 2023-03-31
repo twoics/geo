@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.twoics.geo.R
 import com.twoics.geo.ui.shared.AppBar
@@ -27,9 +26,8 @@ import com.twoics.geo.ui.shared.BottomBar
 fun FilterButton(
     icon: Painter,
     backgroundColor: Color,
-    parentWidth: Dp
+    sizes: SearchScreenSizes
 ) {
-    val sizes = SearchScreenSizes(parentWidth)
     Column(
         Modifier
             .padding(sizes.filterButtonHorizontalPadding, sizes.filterButtonVerticalPadding)
@@ -64,50 +62,50 @@ fun FilterButton(
 }
 
 @Composable
-private fun CultureButton(parentWidth: Dp) {
+private fun CultureButton(sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.arch)
     val backgroundColor = Color(0xFFFFE9E9)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        parentWidth = parentWidth
+        sizes = sizes
     )
 }
 
 @Composable
-private fun FoodButton(parentWidth: Dp) {
+private fun FoodButton(sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.food)
     val backgroundColor = Color(0xFFFFF4E8)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        parentWidth = parentWidth
+        sizes = sizes
     )
 }
 
 @Composable
-private fun NatureButton(parentWidth: Dp) {
+private fun NatureButton(sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.nature)
     val backgroundColor = Color(0xFFEAFFF2)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        parentWidth = parentWidth
+        sizes = sizes
     )
 }
 
 @Composable
-private fun SportButton(parentWidth: Dp) {
+private fun SportButton(sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.sport)
     val backgroundColor = Color(0xFFEEF7FF)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        parentWidth = parentWidth
+        sizes = sizes
     )
 }
 
@@ -165,40 +163,37 @@ private fun SearchButton() {
 }
 
 @Composable
-private fun SheetContent() {
-    BoxWithConstraints {
-        val sizes = SearchScreenSizes(this.maxWidth)
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(sizes.sheetMaxHeight)
-                .shadow(25.dp),
-            backgroundColor = Color.White
+private fun SheetContent(sizes: SearchScreenSizes) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(sizes.sheetMaxHeight)
+            .shadow(25.dp),
+        backgroundColor = Color.White
+    ) {
+        Column(
+            Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        sizes.sliderHorizontalPadding,
+                        sizes.buttonsVerticalPadding,
+                        sizes.sliderHorizontalPadding,
+                        sizes.buttonsVerticalPadding
+                    ),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(
-                            sizes.sliderHorizontalPadding,
-                            sizes.buttonsVerticalPadding,
-                            sizes.sliderHorizontalPadding,
-                            sizes.buttonsVerticalPadding
-                        ),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    CultureButton(sizes.maxWidth)
-                    FoodButton(sizes.maxWidth)
-                    NatureButton(sizes.maxWidth)
-                    SportButton(sizes.maxWidth)
-                }
-
-                RadiusSlider(sizes)
-                SearchButton()
+                CultureButton(sizes)
+                FoodButton(sizes)
+                NatureButton(sizes)
+                SportButton(sizes)
             }
+
+            RadiusSlider(sizes)
+            SearchButton()
         }
     }
 }
@@ -251,7 +246,7 @@ fun SearchScreen() {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            SheetContent()
+                            SheetContent(sizes)
                         },
                         sheetPeekHeight = sizes.sheetPeakHeight,
                         sheetShape = RoundedCornerShape(
