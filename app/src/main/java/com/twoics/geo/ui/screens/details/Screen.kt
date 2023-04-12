@@ -143,10 +143,11 @@ fun SheetContent(sizes: DetailScreenSizes) {
 }
 
 @Composable
-private fun BackgroundContent() {
+private fun BackgroundContent(sizes: DetailScreenSizes) {
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .fillMaxHeight(sizes.backgroundShare)
     ) {
         Image(
             painterResource(R.drawable.backdata),
@@ -196,7 +197,7 @@ fun DetailsScreen() {
                             0.dp
                         ),
                     ) {
-                        BackgroundContent()
+                        BackgroundContent(sizes)
                     }
                 }
             }

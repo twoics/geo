@@ -13,6 +13,7 @@ class DetailScreenSizes(screenWidth: Dp) {
     private val _sheetPeakHeightShare: Float = 0.52f
     private val _sheetCornerShare: Float = 0.05f
     private val _placeWidthShare: Float = 0.5f
+    private val _backgroundHeightShare: Float = 0.75f
 
     init {
         _maxWidth = screenWidth
@@ -41,4 +42,7 @@ class DetailScreenSizes(screenWidth: Dp) {
 
     val placeWidth: Dp
         get() = _maxWidth * _placeWidthShare
+
+    val backgroundShare: Float
+        get() = _backgroundHeightShare
 }
