@@ -44,7 +44,9 @@ private fun TypeIcon(
 private fun PlaceInfo(
     name: String,
     city: String,
-    country: String
+    country: String,
+    street: String,
+    house: String
 ) {
     Column {
         Text(
@@ -53,7 +55,7 @@ private fun PlaceInfo(
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "$country, $city",
+            text = "$country, $city, $street $house",
             fontSize = 16.sp,
             color = Color.Gray
         )
@@ -101,10 +103,8 @@ private fun Description(
 
 //@Preview
 @Composable
-fun SheetContent() {
+fun SheetContent(sizes: DetailScreenSizes) {
     BoxWithConstraints {
-        val sizes = DetailScreenSizes(this.maxWidth)
-
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -113,17 +113,23 @@ fun SheetContent() {
         ) {
             Column {
                 Row(
-                    Modifier.padding(sizes.contentWidth)
+                    Modifier
+                        .padding(sizes.contentPaddings)
                 ) {
 
                     TypeIcon(sizes)
+                    Box(
+                        Modifier.width(sizes.placeWidth)
+                    ) {
+                        PlaceInfo(
+                            name = "Театр кукол",
+                            country = "Россия",
+                            city = "Красноярск",
+                            street = "Борисова",
+                            house = "3"
+                        )
 
-                    PlaceInfo(
-                        name = "Театр кукол",
-                        country = "Россия",
-                        city = "Красноярск"
-                    )
-
+                    }
                     LikeButton()
                 }
 
@@ -179,7 +185,7 @@ fun DetailsScreen() {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            SheetContent()
+                            SheetContent(sizes)
                         },
 
                         sheetPeekHeight = sizes.sheetPeakHeight,
