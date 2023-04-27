@@ -15,9 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.twoics.geo.R
+import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 
@@ -26,7 +26,9 @@ import com.twoics.geo.ui.shared.BottomBar
 fun FilterButton(
     icon: Painter,
     backgroundColor: Color,
-    sizes: SearchScreenSizes
+    sizes: SearchScreenSizes,
+    viewModel: SearchViewModel,
+    bookmarkType: BookmarkType
 ) {
     Column(
         Modifier
@@ -40,6 +42,9 @@ fun FilterButton(
         Button(
             onClick = {
                 selected.value = !selected.value
+                viewModel.onEvent(
+                    SearchEvent.FilterButtonClicked(bookmarkType)
+                )
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = backgroundColor,
@@ -62,55 +67,66 @@ fun FilterButton(
 }
 
 @Composable
-private fun CultureButton(sizes: SearchScreenSizes) {
+private fun CultureButton(viewModel: SearchViewModel, sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.arch)
     val backgroundColor = Color(0xFFFFE9E9)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        sizes = sizes
+        sizes = sizes,
+        viewModel,
+        BookmarkType.CULTURE
     )
 }
 
 @Composable
-private fun FoodButton(sizes: SearchScreenSizes) {
+private fun FoodButton(viewModel: SearchViewModel, sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.food)
     val backgroundColor = Color(0xFFFFF4E8)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        sizes = sizes
+        sizes = sizes,
+        viewModel,
+        BookmarkType.FOOD
     )
 }
 
 @Composable
-private fun NatureButton(sizes: SearchScreenSizes) {
+private fun NatureButton(viewModel: SearchViewModel, sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.nature)
     val backgroundColor = Color(0xFFEAFFF2)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        sizes = sizes
+        sizes = sizes,
+        viewModel,
+        BookmarkType.NATURE
     )
 }
 
 @Composable
-private fun SportButton(sizes: SearchScreenSizes) {
+private fun SportButton(viewModel: SearchViewModel, sizes: SearchScreenSizes) {
     val icon = painterResource(id = R.drawable.sport)
     val backgroundColor = Color(0xFFEEF7FF)
 
     FilterButton(
         icon = icon,
         backgroundColor = backgroundColor,
-        sizes = sizes
+        sizes = sizes,
+        viewModel,
+        BookmarkType.SPORT
     )
 }
 
 @Composable
-private fun RadiusSlider(sizes: SearchScreenSizes) {
+private fun RadiusSlider(
+    viewModel: SearchViewModel,
+    sizes: SearchScreenSizes
+) {
     Column(
         modifier = Modifier.padding(sizes.sliderHorizontalPadding, 0.dp)
     )
@@ -124,6 +140,7 @@ private fun RadiusSlider(sizes: SearchScreenSizes) {
             value = sliderPosition,
             onValueChange = {
                 sliderPosition = it
+                viewModel.onEvent(SearchEvent.RadiusChanged(it))
             }
         )
         Row(
@@ -131,6 +148,7 @@ private fun RadiusSlider(sizes: SearchScreenSizes) {
             horizontalArrangement = Arrangement.SpaceBetween
         )
         {
+            // TODO MIX MAX from ViewModel
             Text(
                 text = "50m",
                 modifier = Modifier.padding(0.dp),
@@ -146,10 +164,10 @@ private fun RadiusSlider(sizes: SearchScreenSizes) {
 }
 
 @Composable
-private fun SearchButton() {
+private fun SearchButton(viewModel: SearchViewModel) {
     ExtendedFloatingActionButton(
         onClick = {
-//                        navController.navigate("details")
+            viewModel.onEvent(SearchEvent.OnSearchClick)
         },
         icon = {
             Icon(
@@ -163,7 +181,7 @@ private fun SearchButton() {
 }
 
 @Composable
-private fun SheetContent(sizes: SearchScreenSizes) {
+private fun SheetContent(viewModel: SearchViewModel, sizes: SearchScreenSizes) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -186,14 +204,14 @@ private fun SheetContent(sizes: SearchScreenSizes) {
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                CultureButton(sizes)
-                FoodButton(sizes)
-                NatureButton(sizes)
-                SportButton(sizes)
+                CultureButton(viewModel, sizes)
+                FoodButton(viewModel, sizes)
+                NatureButton(viewModel, sizes)
+                SportButton(viewModel, sizes)
             }
 
-            RadiusSlider(sizes)
-            SearchButton()
+            RadiusSlider(viewModel, sizes)
+            SearchButton(viewModel)
         }
     }
 }
@@ -217,8 +235,9 @@ private fun BackgroundContent(sizes: SearchScreenSizes) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview
-fun SearchScreen() {
+fun SearchScreen(
+    viewModel: SearchViewModel
+) {
     MaterialTheme {
         BoxWithConstraints {
             val sizes = SearchScreenSizes(this.maxWidth)
@@ -246,7 +265,7 @@ fun SearchScreen() {
                     BottomSheetScaffold(
                         scaffoldState = scaffoldState,
                         sheetContent = {
-                            SheetContent(sizes)
+                            SheetContent(viewModel, sizes)
                         },
                         sheetPeekHeight = sizes.sheetPeakHeight,
                         sheetShape = RoundedCornerShape(
