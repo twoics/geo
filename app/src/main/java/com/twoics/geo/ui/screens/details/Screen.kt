@@ -22,7 +22,9 @@ import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 import com.twoics.geo.ui.shared.IScreen
 
-class DetailsScreen(viewModel: DetailsViewModel) : IScreen {
+class DetailsScreen(
+    private var viewModel: DetailsViewModel
+) : IScreen {
     private lateinit var sizes: DetailScreenSizes
 
     @OptIn(ExperimentalMaterialApi::class)
