@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.twoics.geo.screens.Bookmarks
-import com.twoics.geo.screens.Details
-import com.twoics.geo.screens.Main
+import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
+import com.twoics.geo.ui.screens.details.DetailsScreen
+import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.theme.GeoTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,9 +24,9 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
                     NavHost(navController, startDestination = "main") {
-                        composable("main") { Main(navController) }
-                        composable("bookmarks") { Bookmarks(navController) }
-                        composable("details") { Details(navController) }
+                        composable("main") { SearchScreen() }
+                        composable("bookmarks") { BookmarksScreen() }
+                        composable("details") { DetailsScreen() }
                     }
                 }
             }

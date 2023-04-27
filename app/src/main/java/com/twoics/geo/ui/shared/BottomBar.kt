@@ -1,4 +1,4 @@
-package com.twoics.geo.components
+package com.twoics.geo.ui.shared
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
 
 private data class NavigationData(
     val titles: List<String> = listOf("Search", "Bookmarks"),
@@ -16,7 +15,7 @@ private data class NavigationData(
 )
 
 @Composable
-private fun Navigation(navController: NavController) {
+private fun Navigation() {
     var selectedItem by remember { mutableStateOf(0) }
     val navigationData = NavigationData()
 
@@ -29,10 +28,10 @@ private fun Navigation(navController: NavController) {
                 onClick = {
                     selectedItem = index
                     if (item == "Search") {
-                        navController.navigate("main")
+//                        navController.navigate("main")
                     } else {
 
-                        navController.navigate("bookmarks")
+//                        navController.navigate("bookmarks")
                     }
                 }
             )
@@ -42,11 +41,11 @@ private fun Navigation(navController: NavController) {
 
 
 @Composable
-fun BottomBar(navController: NavController) {
+fun BottomBar() {
     return BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Navigation(navController)
+        Navigation()
     }
 }
