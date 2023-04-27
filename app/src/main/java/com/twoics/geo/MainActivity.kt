@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
                     NavHost(navController, startDestination = "main") {
-                        composable("main") { SearchScreen(SearchViewModel()) }
+                        composable("main") { SearchScreen(SearchViewModel()).Screen() }
                         composable("bookmarks") { BookmarksScreen() }
                         composable("details") { DetailsScreen() }
                     }
