@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
 import com.twoics.geo.ui.screens.details.DetailsScreen
+import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
 import com.twoics.geo.ui.theme.GeoTheme
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController, startDestination = "main") {
                         composable("main") { SearchScreen(SearchViewModel()).Screen() }
                         composable("bookmarks") { BookmarksScreen() }
-                        composable("details") { DetailsScreen() }
+                        composable("details") { DetailsScreen(DetailsViewModel()).Screen() }
                     }
                 }
             }
