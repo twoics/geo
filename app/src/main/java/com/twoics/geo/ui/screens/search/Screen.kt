@@ -21,10 +21,12 @@ import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 import com.twoics.geo.ui.shared.IScreen
+import com.twoics.geo.utils.UiEvent
 
 
 class SearchScreen(
-    private var viewModel: SearchViewModel
+    private var viewModel: SearchViewModel,
+    private var onNavigate: (UiEvent.Navigate) -> Unit,
 ) : IScreen {
 
     private lateinit var sizes: SearchScreenSizes
@@ -32,6 +34,15 @@ class SearchScreen(
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Screen() {
+        LaunchedEffect(key1 = true) {
+            viewModel.uiEvent.collect { event ->
+                when (event) {
+                    is UiEvent.Navigate -> onNavigate(event)
+                    else -> Unit
+                }
+            }
+        }
+
         MaterialTheme {
             BoxWithConstraints {
                 sizes = SearchScreenSizes(this.maxWidth)
