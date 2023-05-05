@@ -2,6 +2,8 @@ package com.twoics.geo.data.repository
 
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 class TestBookmarksRepository : IBookmarksRepository {
     private val bookmarks = arrayListOf<Bookmark>(
@@ -18,7 +20,7 @@ class TestBookmarksRepository : IBookmarksRepository {
             type = BookmarkType.CULTURE
         ),
         Bookmark(
-            id = 1,
+            id = 2,
             name = "Vo Gan Udon",
             country = "Россиия",
             city = "Красноярск",
@@ -29,29 +31,30 @@ class TestBookmarksRepository : IBookmarksRepository {
             description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
             type = BookmarkType.FOOD
         ),
-        Bookmark(
-            id = 1,
-            name = "Столбы",
-            country = "Россиия",
-            city = "Красноярск",
-            street = "Красной армии",
-            house = "125",
-            lat = 112,
-            long = 252,
-            description = "Test Test Test Test Test Test Test Test Test Test Test Test Test",
-            type = BookmarkType.NATURE
-        ), Bookmark(
-            id = 1,
-            name = "ИКИТ",
-            country = "Россиия",
-            city = "Красноярск",
-            street = "Академика Киренского",
-            house = "24",
-            lat = 15,
-            long = 62,
-            description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
-            type = BookmarkType.SPORT
-        ),
+//        Bookmark(
+//            id = 3,
+//            name = "Столбы",
+//            country = "Россиия",
+//            city = "Красноярск",
+//            street = "Красной армии",
+//            house = "125",
+//            lat = 112,
+//            long = 252,
+//            description = "Test Test Test Test Test Test Test Test Test Test Test Test Test",
+//            type = BookmarkType.NATURE
+//        ),
+//        Bookmark(
+//            id = 4,
+//            name = "ИКИТ",
+//            country = "Россиия",
+//            city = "Красноярск",
+//            street = "Академика Киренского",
+//            house = "24",
+//            lat = 15,
+//            long = 62,
+//            description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
+//            type = BookmarkType.SPORT
+//        ),
     )
 
     override suspend fun insertBookmark(bookmark: Bookmark) {
@@ -59,10 +62,14 @@ class TestBookmarksRepository : IBookmarksRepository {
     }
 
     override suspend fun deleteBookmark(bookmark: Bookmark) {
-        this.bookmarks.drop(bookmark.id);
+        this.bookmarks.removeAt(bookmark.id)
     }
 
     override suspend fun getById(id: Int): Bookmark? {
         return this.bookmarks[id];
+    }
+
+    override fun getAll(): Flow<List<Bookmark>> {
+        return flowOf(this.bookmarks)
     }
 }

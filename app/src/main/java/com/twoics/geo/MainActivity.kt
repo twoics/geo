@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.twoics.geo.data.repository.TestBookmarksRepository
 import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
 import com.twoics.geo.ui.screens.bookmarks.BookmarksViewModel
 import com.twoics.geo.ui.screens.details.DetailsScreen
@@ -17,17 +18,20 @@ import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
 import com.twoics.geo.ui.theme.GeoTheme
+import com.twoics.geo.utils.Routes
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val repository = TestBookmarksRepository()
+
         setContent {
             GeoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
-                    NavHost(navController, startDestination = "main") {
-                        composable("main") {
+                    NavHost(navController, startDestination = Routes.BOOKMARKS) {
+                        composable(Routes.SEARCH) {
                             SearchScreen(
                                 SearchViewModel(),
                                 onNavigate = {
@@ -35,7 +39,14 @@ class MainActivity : ComponentActivity() {
                                 }
                             ).Screen()
                         }
-                        composable("bookmarks") { BookmarksScreen(BookmarksViewModel()).Screen() }
+                        composable("bookmarks") {
+                            BookmarksScreen(
+                                BookmarksViewModel(repository),
+                                onNavigate = {
+                                    navController.navigate(it.route)
+                                }
+                            ).Screen()
+                        }
                         composable("details") { DetailsScreen(DetailsViewModel()).Screen() }
                     }
                 }

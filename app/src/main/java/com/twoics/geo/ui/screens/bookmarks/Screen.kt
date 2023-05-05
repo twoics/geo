@@ -3,28 +3,47 @@ package com.twoics.geo.ui.screens.bookmarks
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.AppBar
 import com.twoics.geo.ui.shared.BottomBar
 import com.twoics.geo.ui.shared.IScreen
+import com.twoics.geo.utils.UiEvent
 
 class BookmarksScreen(
-    private var viewModel: BookmarksViewModel
+    private var viewModel: BookmarksViewModel,
+    private var onNavigate: (UiEvent.Navigate) -> Unit,
 ) : IScreen {
     private lateinit var sizes: BookmarksScreenSizes
 
+
     @Composable
     override fun Screen() {
+        LaunchedEffect(key1 = true) {
+            viewModel.uiEvent.collect { event ->
+                when (event) {
+                    is UiEvent.Navigate -> onNavigate(event)
+                    else -> Unit
+                }
+            }
+        }
+
+        val bookmarks by viewModel.bookmarks.collectAsState(initial = emptyList())
+
         MaterialTheme {
             BoxWithConstraints {
                 sizes = BookmarksScreenSizes(this.maxWidth)
@@ -42,32 +61,10 @@ class BookmarksScreen(
                         LazyColumn(
                             modifier = Modifier.fillMaxHeight()
                         ) {
-                            item {
-                                Card(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(sizes.cardPadding)
-                                        .clickable { },
-                                    elevation = sizes.cardElevation,
-                                    shape = RoundedCornerShape(sizes.cardCorner)
-                                ) {
-                                    Row(
-                                        Modifier
-                                            .padding(sizes.rowPadding)
-                                            .height(sizes.rowHeight),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-
-                                        TypeIcon()
-                                        PlaceInfo(
-                                            "Театр Кукол",
-                                            "Россия",
-                                            "Красноясрк",
-                                        )
-                                        DeleteButton()
-                                    }
-                                }
+                            itemsIndexed(bookmarks) { _, data ->
+                                Bookmark(data, viewModel::onEvent)
                             }
+
                         }
                     }
                 }
@@ -75,8 +72,49 @@ class BookmarksScreen(
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
-    private fun DeleteButton() {
+    private fun Bookmark(
+        bookmark: Bookmark,
+        onEvent: (BookmarksEvent) -> Unit
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(sizes.cardPadding)
+                .clickable {},
+            elevation = sizes.cardElevation,
+            shape = RoundedCornerShape(sizes.cardCorner),
+            onClick = {
+                onEvent(BookmarksEvent.DetailClick(bookmark = bookmark))
+            }
+        ) {
+            Row(
+                Modifier
+                    .padding(sizes.rowPadding)
+                    .height(sizes.rowHeight),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                TypeIcon()
+                PlaceInfo(
+                    bookmark.name,
+                    bookmark.country,
+                    bookmark.city,
+                )
+                DeleteButton(
+                    bookmark = bookmark,
+                    onEvent = onEvent
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun DeleteButton(
+        bookmark: Bookmark,
+        onEvent: (BookmarksEvent) -> Unit
+    ) {
         Column(
             Modifier
                 .fillMaxWidth(),
@@ -86,7 +124,9 @@ class BookmarksScreen(
                 backgroundColor = Color.White,
                 contentColor = Color.Gray,
                 elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp),
-                onClick = { }
+                onClick = {
+                    onEvent(BookmarksEvent.DeleteClick(bookmark = bookmark))
+                }
             ) {
                 Icon(Icons.Filled.Delete, contentDescription = null)
             }
