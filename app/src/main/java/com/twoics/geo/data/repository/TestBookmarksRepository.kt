@@ -60,16 +60,24 @@ class TestBookmarksRepository : IBookmarksRepository {
     }
 
     override suspend fun deleteBookmark(bookmark: Bookmark) {
+        val deleteMark: Bookmark = get(bookmark.id) ?: return
+
         this.bookmarks.removeAll {
-            it.id == bookmark.id
+            it.id == deleteMark.id
         }
     }
 
     override suspend fun getById(id: Int): Bookmark? {
-        return this.bookmarks[id];
+        return get(id)
     }
 
     override fun getAll(): List<Bookmark> {
         return this.bookmarks
+    }
+
+    private fun get(id: Int): Bookmark? {
+        return this.bookmarks.find {
+            it.id == id
+        }
     }
 }
