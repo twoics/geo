@@ -2,7 +2,6 @@ package com.twoics.geo.data.repository
 
 import com.twoics.geo.data.dao.IBookmarksDao
 import com.twoics.geo.data.models.Bookmark
-import kotlinx.coroutines.flow.Flow
 
 class BookmarksRepository(
     private val dao: IBookmarksDao
@@ -19,7 +18,7 @@ class BookmarksRepository(
         return dao.getById(id)
     }
 
-    override fun getAll(): Flow<List<Bookmark>> {
+    override fun getAll(): List<Bookmark> {
         return dao.getAll()
     }
 }

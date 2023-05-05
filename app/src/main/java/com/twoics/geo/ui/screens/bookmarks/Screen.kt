@@ -11,8 +11,6 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +40,7 @@ class BookmarksScreen(
             }
         }
 
-        val bookmarks by viewModel.bookmarks.collectAsState(initial = emptyList())
+        val bookmarks = viewModel.bookmarks
 
         MaterialTheme {
             BoxWithConstraints {
@@ -64,7 +62,6 @@ class BookmarksScreen(
                             itemsIndexed(bookmarks) { _, data ->
                                 Bookmark(data, viewModel::onEvent)
                             }
-
                         }
                     }
                 }

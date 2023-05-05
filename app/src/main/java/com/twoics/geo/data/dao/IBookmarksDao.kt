@@ -2,7 +2,6 @@ package com.twoics.geo.data.dao
 
 import androidx.room.*
 import com.twoics.geo.data.models.Bookmark
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface IBookmarksDao {
@@ -16,5 +15,5 @@ interface IBookmarksDao {
     suspend fun getById(id: Int): Bookmark?
 
     @Query("SELECT * FROM bookmark")
-    fun getAll(): Flow<List<Bookmark>>
+    fun getAll(): List<Bookmark>
 }
