@@ -52,7 +52,7 @@ class TestBookmarksRepository : IBookmarksRepository {
             long = 62,
             description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
             type = BookmarkType.SPORT
-        ),
+        )
     )
 
     override suspend fun insertBookmark(bookmark: Bookmark) {
@@ -60,7 +60,7 @@ class TestBookmarksRepository : IBookmarksRepository {
     }
 
     override suspend fun deleteBookmark(bookmark: Bookmark) {
-        val deleteMark: Bookmark = get(bookmark.id) ?: return
+        val deleteMark: Bookmark = bookmark.id?.let { get(it) } ?: return
 
         this.bookmarks.removeAll {
             it.id == deleteMark.id

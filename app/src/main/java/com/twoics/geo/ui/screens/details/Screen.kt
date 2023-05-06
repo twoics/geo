@@ -24,7 +24,7 @@ import com.twoics.geo.ui.shared.BottomBar
 import com.twoics.geo.ui.shared.IScreen
 
 class DetailsScreen(
-    private var viewModel: DetailsViewModel
+    private var viewModel: DetailsViewModel,
 ) : IScreen {
     private lateinit var sizes: DetailScreenSizes
 
@@ -112,7 +112,10 @@ class DetailsScreen(
     }
 
     @Composable
-    private fun LikeButton() {
+    private fun LikeButton(
+        bookmark: Bookmark,
+        onEvent: (DetailsEvent) -> Unit
+    ) {
         Column(
             Modifier
                 .fillMaxWidth(),
@@ -121,7 +124,13 @@ class DetailsScreen(
             Button(
                 elevation = ButtonDefaults.elevation(0.dp, 0.dp),
 
-                onClick = { }
+                onClick = {
+                    onEvent(
+                        DetailsEvent.LikeButtonClick(
+                            bookmark = bookmark
+                        )
+                    )
+                }
             ) {
                 Icon(Icons.Filled.Favorite, contentDescription = null)
             }
@@ -176,7 +185,7 @@ class DetailsScreen(
                             )
 
                         }
-                        LikeButton()
+                        LikeButton(bookmark, viewModel::onEvent)
                     }
 
                     Description(

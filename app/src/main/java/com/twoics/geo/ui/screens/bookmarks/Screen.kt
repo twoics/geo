@@ -28,7 +28,6 @@ class BookmarksScreen(
 ) : IScreen {
     private lateinit var sizes: BookmarksScreenSizes
 
-
     @Composable
     override fun Screen() {
         LaunchedEffect(key1 = true) {
