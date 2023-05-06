@@ -8,9 +8,6 @@ import com.twoics.geo.data.repository.IBookmarksRepository
 import com.twoics.geo.nav.INavigation
 import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.shared.dto.IBookmarkTransmit
-import com.twoics.geo.utils.UiEvent
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class BookmarksViewModel
@@ -22,9 +19,6 @@ class BookmarksViewModel
 
     private var _bookmarks = mutableStateListOf<Bookmark>()
     val bookmarks: List<Bookmark> = _bookmarks
-
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         viewModelScope.launch {

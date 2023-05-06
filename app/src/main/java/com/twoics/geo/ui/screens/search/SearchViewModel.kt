@@ -8,9 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.nav.INavigation
 import com.twoics.geo.nav.Routes
-import com.twoics.geo.utils.UiEvent
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 
@@ -19,9 +16,6 @@ class SearchViewModel(
 ) : ViewModel() {
     private var _radius by mutableStateOf(Float.MIN_VALUE)
     private var _selectedTypes = arrayListOf<BookmarkType>()
-
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         viewModelScope.launch {

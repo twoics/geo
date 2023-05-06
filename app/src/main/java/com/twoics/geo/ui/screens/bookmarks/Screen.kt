@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,25 +19,14 @@ import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.screen.AppBar
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
-import com.twoics.geo.utils.UiEvent
 
 class BookmarksScreen(
     private var viewModel: BookmarksViewModel,
-    private var onNavigate: (UiEvent.Navigate) -> Unit,
 ) : IScreen {
     private lateinit var sizes: BookmarksScreenSizes
 
     @Composable
     override fun Screen() {
-        LaunchedEffect(key1 = true) {
-            viewModel.uiEvent.collect { event ->
-                when (event) {
-                    is UiEvent.Navigate -> onNavigate(event)
-                    else -> Unit
-                }
-            }
-        }
-
         val bookmarks = viewModel.bookmarks
 
         MaterialTheme {

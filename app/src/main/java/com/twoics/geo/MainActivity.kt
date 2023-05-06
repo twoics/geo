@@ -40,24 +40,18 @@ class MainActivity : ComponentActivity() {
                                 SearchViewModel(
                                     navigation = navigation,
                                 ),
-                                onNavigate = {
-                                    navController.navigate(it.route)
-                                }
                             ).Screen()
                         }
-                        composable("bookmarks") {
+                        composable(Routes.BOOKMARKS) {
                             BookmarksScreen(
                                 BookmarksViewModel(
                                     navigation = navigation,
                                     repository = repository,
                                     transmitViewModel = TransmitBookmarkViewModel
                                 ),
-                                onNavigate = {
-                                    navController.navigate(it.route)
-                                }
                             ).Screen()
                         }
-                        composable("details") {
+                        composable(Routes.DETAILS) {
                             DetailsScreen(
                                 DetailsViewModel(
                                     navigation = navigation,

@@ -8,9 +8,6 @@ import com.twoics.geo.data.repository.IBookmarksRepository
 import com.twoics.geo.nav.INavigation
 import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.shared.dto.IBookmarkTransmit
-import com.twoics.geo.utils.UiEvent
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(
@@ -20,9 +17,6 @@ class DetailsViewModel(
 ) : ViewModel() {
 
     var bookmark: Bookmark? = null
-
-    private val _uiEvent = Channel<UiEvent>()
-    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         viewModelScope.launch {
@@ -41,7 +35,6 @@ class DetailsViewModel(
             is DetailsEvent.LikeButtonClick -> {
                 viewModelScope.launch {
                     navigation.navigate(Routes.SEARCH)
-                    Log.e("DETAIL", "GOT IT")
                 }
             }
         }

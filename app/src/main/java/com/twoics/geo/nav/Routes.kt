@@ -5,7 +5,6 @@ object Routes {
     const val DETAILS = "details"
     const val SEARCH = "search"
 
-
     fun contains(route: String): Boolean {
         return route in listOf(BOOKMARKS, DETAILS, SEARCH)
     }
