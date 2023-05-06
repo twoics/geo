@@ -1,7 +1,9 @@
 package com.twoics.geo.data.models
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 enum class BookmarkType {
     CULTURE,
@@ -11,6 +13,7 @@ enum class BookmarkType {
 }
 
 @Entity
+@Parcelize
 data class Bookmark(
     @PrimaryKey
     val id: Int,
@@ -23,4 +26,4 @@ data class Bookmark(
     var long: Int,
     var description: String,
     var type: BookmarkType
-)
+) : Parcelable

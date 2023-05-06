@@ -17,6 +17,7 @@ import com.twoics.geo.ui.screens.details.DetailsScreen
 import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
+import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
 import com.twoics.geo.ui.theme.GeoTheme
 import com.twoics.geo.utils.Routes
 
@@ -41,13 +42,23 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("bookmarks") {
                             BookmarksScreen(
-                                BookmarksViewModel(repository),
+                                BookmarksViewModel(
+                                    repository = repository,
+                                    transmitViewModel = TransmitBookmarkViewModel
+                                ),
                                 onNavigate = {
                                     navController.navigate(it.route)
                                 }
                             ).Screen()
                         }
-                        composable("details") { DetailsScreen(DetailsViewModel()).Screen() }
+                        composable("details") {
+                            DetailsScreen(
+                                DetailsViewModel(
+                                    repository = repository,
+                                    transmitViewModel = TransmitBookmarkViewModel
+                                )
+                            ).Screen()
+                        }
                     }
                 }
             }
