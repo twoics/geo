@@ -5,8 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.repository.IBookmarksRepository
+import com.twoics.geo.nav.INavigation
+import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.shared.dto.IBookmarkTransmit
-import com.twoics.geo.utils.Routes
 import com.twoics.geo.utils.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 
 class BookmarksViewModel
     (
+    private val navigation: INavigation,
     private var repository: IBookmarksRepository,
     private var transmitViewModel: IBookmarkTransmit
 ) : ViewModel() {
@@ -41,15 +43,9 @@ class BookmarksViewModel
             is BookmarksEvent.DetailClick -> {
                 viewModelScope.launch {
                     transmitViewModel.set(event.bookmark)
-                    sendUiEvent(UiEvent.Navigate(Routes.DETAILS))
+                    navigation.navigate(Routes.DETAILS)
                 }
             }
-        }
-    }
-
-    private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
         }
     }
 

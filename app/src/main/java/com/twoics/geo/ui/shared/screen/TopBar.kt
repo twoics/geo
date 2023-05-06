@@ -1,4 +1,4 @@
-package com.twoics.geo.ui.shared
+package com.twoics.geo.ui.shared.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-//@Preview
 fun AppBar() {
     Column {
         TopAppBar(title = {

@@ -17,9 +17,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.ui.shared.AppBar
-import com.twoics.geo.ui.shared.BottomBar
-import com.twoics.geo.ui.shared.IScreen
+import com.twoics.geo.ui.shared.screen.AppBar
+import com.twoics.geo.ui.shared.screen.BottomBar
+import com.twoics.geo.ui.shared.screen.IScreen
 import com.twoics.geo.utils.UiEvent
 
 class BookmarksScreen(

@@ -1,4 +1,4 @@
-package com.twoics.geo.ui.shared
+package com.twoics.geo.ui.shared.screen
 
 import androidx.compose.runtime.Composable
 

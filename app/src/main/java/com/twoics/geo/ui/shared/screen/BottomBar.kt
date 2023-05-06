@@ -1,4 +1,4 @@
-package com.twoics.geo.ui.shared
+package com.twoics.geo.ui.shared.screen
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
@@ -27,12 +27,6 @@ private fun Navigation() {
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
-                    if (item == "Search") {
-//                        navController.navigate("main")
-                    } else {
-
-//                        navController.navigate("bookmarks")
-                    }
                 }
             )
         }

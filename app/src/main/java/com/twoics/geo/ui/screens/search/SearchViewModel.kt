@@ -6,14 +6,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.twoics.geo.data.models.BookmarkType
-import com.twoics.geo.utils.Routes
+import com.twoics.geo.nav.INavigation
+import com.twoics.geo.nav.Routes
 import com.twoics.geo.utils.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel(
+    private val navigation: INavigation
+) : ViewModel() {
     private var _radius by mutableStateOf(Float.MIN_VALUE)
     private var _selectedTypes = arrayListOf<BookmarkType>()
 
@@ -41,7 +44,7 @@ class SearchViewModel : ViewModel() {
             }
 
             is SearchEvent.OnSearchClick -> {
-                sendUiEvent(UiEvent.Navigate(Routes.BOOKMARKS))
+                navigation.navigate(Routes.BOOKMARKS)
             }
         }
     }
@@ -56,11 +59,5 @@ class SearchViewModel : ViewModel() {
 
     private fun updateRadius(value: Float) {
         _radius = value
-    }
-
-    private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
-        }
     }
 }

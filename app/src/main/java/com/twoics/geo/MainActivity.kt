@@ -1,7 +1,6 @@
 package com.twoics.geo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.twoics.geo.data.repository.TestBookmarksRepository
+import com.twoics.geo.nav.Navigation
+import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
 import com.twoics.geo.ui.screens.bookmarks.BookmarksViewModel
 import com.twoics.geo.ui.screens.details.DetailsScreen
@@ -20,7 +21,6 @@ import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
 import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
 import com.twoics.geo.ui.theme.GeoTheme
-import com.twoics.geo.utils.Routes
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +32,14 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
+                    val navigation = Navigation(navController)
+
                     NavHost(navController, startDestination = Routes.BOOKMARKS) {
                         composable(Routes.SEARCH) {
                             SearchScreen(
-                                SearchViewModel(),
+                                SearchViewModel(
+                                    navigation = navigation,
+                                ),
                                 onNavigate = {
                                     navController.navigate(it.route)
                                 }
@@ -44,6 +48,7 @@ class MainActivity : ComponentActivity() {
                         composable("bookmarks") {
                             BookmarksScreen(
                                 BookmarksViewModel(
+                                    navigation = navigation,
                                     repository = repository,
                                     transmitViewModel = TransmitBookmarkViewModel
                                 ),
@@ -55,6 +60,7 @@ class MainActivity : ComponentActivity() {
                         composable("details") {
                             DetailsScreen(
                                 DetailsViewModel(
+                                    navigation = navigation,
                                     repository = repository,
                                     transmitViewModel = TransmitBookmarkViewModel,
                                 ),
