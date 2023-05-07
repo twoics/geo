@@ -18,10 +18,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.twoics.geo.R
 import com.twoics.geo.data.models.BookmarkType
-import com.twoics.geo.ui.shared.screen.IScreen
-import com.twoics.geo.ui.shared.screen.AppBar
 import com.twoics.geo.ui.shared.screen.BottomBar
-import com.twoics.geo.utils.UiEvent
+import com.twoics.geo.ui.shared.screen.IScreen
 
 
 class SearchScreen(
@@ -38,7 +36,7 @@ class SearchScreen(
                 sizes = SearchScreenSizes(this.maxWidth)
                 Scaffold(
                     topBar = {
-                        AppBar()
+                        TopBar()
                     },
                     bottomBar = {
                         BottomBar()
@@ -74,6 +72,19 @@ class SearchScreen(
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun TopBar() {
+        Column {
+            TopAppBar(
+                title = {
+                    Text("Search")
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 

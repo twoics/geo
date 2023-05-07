@@ -1,6 +1,5 @@
 package com.twoics.geo.ui.screens.details
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.twoics.geo.data.models.Bookmark
@@ -29,6 +28,11 @@ class DetailsViewModel(
         when (event) {
             is DetailsEvent.BackButtonClick -> {
                 viewModelScope.launch {
+                    if (bookmark?.id == null) {
+                        navigation.navigate(Routes.SEARCH)
+                        return@launch
+                    }
+                    navigation.navigate(Routes.BOOKMARKS)
                 }
             }
 

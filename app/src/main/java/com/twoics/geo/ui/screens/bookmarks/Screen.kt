@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.ui.shared.screen.AppBar
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 
@@ -35,7 +35,7 @@ class BookmarksScreen(
 
                 Scaffold(
                     topBar = {
-                        AppBar()
+                        TopBar(viewModel::onEvent)
                     },
                     bottomBar = {
                         BottomBar()
@@ -53,6 +53,26 @@ class BookmarksScreen(
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun TopBar(
+        onEvent: (BookmarksEvent) -> Unit
+    ) {
+        Column {
+            TopAppBar(title = {
+                Text("Bookmarks")
+            }, navigationIcon = {
+                IconButton(onClick = {
+                    onEvent(BookmarksEvent.BackButtonClick)
+                }) {
+                    Icon(Icons.Filled.ArrowBack, null)
+                }
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 

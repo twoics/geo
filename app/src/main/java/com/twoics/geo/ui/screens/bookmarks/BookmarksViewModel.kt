@@ -40,6 +40,10 @@ class BookmarksViewModel
                     navigation.navigate(Routes.DETAILS)
                 }
             }
+
+            is BookmarksEvent.BackButtonClick -> {
+                navigation.navigate(Routes.SEARCH)
+            }
         }
     }
 

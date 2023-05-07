@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.ui.shared.screen.AppBar
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 
@@ -37,7 +37,7 @@ class DetailsScreen(
 
                 Scaffold(
                     topBar = {
-                        AppBar()
+                        TopBar(viewModel::onEvent)
                     },
                     bottomBar = {
                         BottomBar()
@@ -71,6 +71,24 @@ class DetailsScreen(
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun TopBar(onEvent: (DetailsEvent) -> Unit) {
+        Column {
+            TopAppBar(title = {
+                Text("Details")
+            }, navigationIcon = {
+                IconButton(onClick = {
+                    onEvent(DetailsEvent.BackButtonClick)
+                }) {
+                    Icon(Icons.Filled.ArrowBack, null)
+                }
+            },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 
@@ -116,6 +134,11 @@ class DetailsScreen(
         bookmark: Bookmark,
         onEvent: (DetailsEvent) -> Unit
     ) {
+        var buttonEnabled: Boolean = false
+        if (bookmark.id == null) {
+            buttonEnabled = true
+        }
+
         Column(
             Modifier
                 .fillMaxWidth(),
@@ -130,7 +153,9 @@ class DetailsScreen(
                             bookmark = bookmark
                         )
                     )
-                }
+                },
+                enabled = buttonEnabled
+
             ) {
                 Icon(Icons.Filled.Favorite, contentDescription = null)
             }

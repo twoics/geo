@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val navigation = Navigation(navController)
 
-                    NavHost(navController, startDestination = Routes.BOOKMARKS) {
+                    NavHost(navController, startDestination = Routes.SEARCH) {
                         composable(Routes.SEARCH) {
                             SearchScreen(
                                 SearchViewModel(
