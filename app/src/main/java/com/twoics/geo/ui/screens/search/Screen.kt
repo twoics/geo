@@ -31,6 +31,7 @@ class SearchScreen(
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Screen() {
+        val scaffoldState = rememberScaffoldState()
         MaterialTheme {
             BoxWithConstraints {
                 sizes = SearchScreenSizes(this.maxWidth)
@@ -40,7 +41,8 @@ class SearchScreen(
                     },
                     bottomBar = {
                         BottomBar()
-                    }
+                    },
+                    scaffoldState = scaffoldState
 
                 ) { contentPadding ->
                     // Screen content
@@ -51,11 +53,11 @@ class SearchScreen(
                         val sheetState = rememberBottomSheetState(
                             initialValue = BottomSheetValue.Expanded
                         )
-                        val scaffoldState = rememberBottomSheetScaffoldState(
+                        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
                             bottomSheetState = sheetState
                         )
                         BottomSheetScaffold(
-                            scaffoldState = scaffoldState,
+                            scaffoldState = bottomSheetScaffoldState,
                             sheetContent = {
                                 SheetContent()
                             },
