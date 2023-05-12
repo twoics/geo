@@ -65,4 +65,7 @@ dependencies {
     // Room
     implementation "androidx.room:room-runtime:2.3.0"
 
+    // OSM
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+
 }

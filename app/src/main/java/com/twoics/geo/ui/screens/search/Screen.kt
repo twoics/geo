@@ -1,7 +1,6 @@
 package com.twoics.geo.ui.screens.search
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,17 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.twoics.geo.R
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
+import org.osmdroid.views.MapView
 
 
 class SearchScreen(
     private var viewModel: SearchViewModel,
+    private var map: MapView
 ) : IScreen {
 
     private lateinit var sizes: SearchScreenSizes
@@ -69,7 +70,10 @@ class SearchScreen(
                                 0.dp
                             ),
                         ) {
-                            BackgroundContent()
+                            MapContent(
+                                Modifier.fillMaxSize(),
+                                map
+                            )
                         }
                     }
                 }
@@ -274,19 +278,19 @@ class SearchScreen(
     }
 
     @Composable
-    private fun BackgroundContent() {
+    private fun MapContent(
+        modifier: Modifier,
+        mapViewState: MapView,
+        onLoad: ((map: MapView) -> Unit)? = null
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            Image(
-                painterResource(R.drawable.map),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(sizes.backgroundHeight)
-            )
+            AndroidView(
+                { mapViewState },
+                modifier
+            ) { mapView -> onLoad?.invoke(mapView) }
         }
     }
 }

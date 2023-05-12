@@ -1,6 +1,7 @@
 package com.twoics.geo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import com.twoics.geo.ui.screens.details.DetailsScreen
 import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
+import com.twoics.geo.ui.screens.search.rememberMapViewWithLifecycle
 import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
 import com.twoics.geo.ui.theme.GeoTheme
 
@@ -26,7 +28,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repository = TestBookmarksRepository()
-
         setContent {
             GeoTheme {
                 // A surface container using the 'background' color from the theme
@@ -36,10 +37,12 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController, startDestination = Routes.SEARCH) {
                         composable(Routes.SEARCH) {
+                            Log.e("SEARCH", "I'm here")
                             SearchScreen(
                                 SearchViewModel(
                                     navigation = navigation,
                                 ),
+                                map = rememberMapViewWithLifecycle()
                             ).Screen()
                         }
                         composable(Routes.BOOKMARKS) {
