@@ -31,15 +31,22 @@ private object MapConstants {
     const val START_ZOOM = 8.0
 }
 
-class Map {
+interface IMap {
+    val centerMapLocation: GeoPoint
+    val zoom: Double
+    fun drawFoundedPlaces(places: ArrayList<Bookmark>)
+    fun clearPlaces()
+    fun redrawMap(): MapView
+}
+
+object Map : IMap {
     private lateinit var map: MapView
     private var foundedPlaces = ArrayList<Bookmark>()
 
-    lateinit var centerMarker: GeoPoint
+    override lateinit var centerMapLocation: GeoPoint
         private set
-    var zoom: Double = MapConstants.START_ZOOM
+    override var zoom: Double = MapConstants.START_ZOOM
         private set
-
 
     private fun drawCurrentPlaces() {
         fun drawPlace(bookmark: Bookmark) {
@@ -51,19 +58,20 @@ class Map {
         }
     }
 
-    fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
+    override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
         this.foundedPlaces = places
         drawCurrentPlaces()
     }
 
-    fun clearPlaces() {
+    override fun clearPlaces() {
         this.foundedPlaces.clear()
         // TODO
     }
 
-    fun redrawMap() {
+    override fun redrawMap(): MapView {
         this.map = generateMap()
         configureMap()
+        return this.map
     }
 
     private fun configureMap() {
@@ -95,12 +103,12 @@ class Map {
 
         fun setMapView() {
             this.map.controller.setZoom(zoom)
-            this.map.controller.setCenter(centerMarker)
+            this.map.controller.setCenter(centerMapLocation)
         }
 
         fun setMapListeners() {
             fun setMarkerCenter(point: IGeoPoint) {
-                this.centerMarker = GeoPoint(point)
+                this.centerMapLocation = GeoPoint(point)
             }
 
             fun setCurrentZoom(zoom: Double) {
@@ -118,7 +126,6 @@ class Map {
                     return false
                 }
             }))
-
         }
 
         setScrollBorders()
