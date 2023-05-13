@@ -10,10 +10,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
+import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
+import org.osmdroid.events.DelayedMapListener
+import org.osmdroid.events.MapListener
+import org.osmdroid.events.ScrollEvent
+import org.osmdroid.events.ZoomEvent
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+
 
 private object MapConstants {
     const val WEST_BORDER = -180.0
@@ -34,11 +40,12 @@ class Map {
     var zoom: Double = MapConstants.START_ZOOM
         private set
 
-    private fun drawPlace(bookmark: Bookmark) {
-        // TODO
-    }
 
     private fun drawCurrentPlaces() {
+        fun drawPlace(bookmark: Bookmark) {
+            // TODO
+        }
+
         this.foundedPlaces.forEach {
             drawPlace(bookmark = it)
         }
@@ -91,10 +98,34 @@ class Map {
             this.map.controller.setCenter(centerMarker)
         }
 
+        fun setMapListeners() {
+            fun setMarkerCenter(point: IGeoPoint) {
+                this.centerMarker = GeoPoint(point)
+            }
+
+            fun setCurrentZoom(zoom: Double) {
+                this.zoom = zoom
+            }
+
+            this.map.setMapListener(DelayedMapListener(object : MapListener {
+                override fun onScroll(paramScrollEvent: ScrollEvent): Boolean {
+                    setMarkerCenter(map.mapCenter)
+                    return true
+                }
+
+                override fun onZoom(event: ZoomEvent): Boolean {
+                    setCurrentZoom(map.zoomLevelDouble)
+                    return false
+                }
+            }))
+
+        }
+
         setScrollBorders()
         setScaleBorders()
         makeTouchable()
         setMapView()
+        setMapListeners()
         drawCurrentPlaces()
     }
 
