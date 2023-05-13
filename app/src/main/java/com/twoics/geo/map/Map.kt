@@ -9,11 +9,84 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
+import com.twoics.geo.data.models.Bookmark
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.BoundingBox
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
+private object MapConstants {
+    const val WEST_BORDER = -180.0
+    const val SOUTH_BORDER = -85.0
+    const val NORTH_BORDER = 85.0
+    const val EAST_BORDER = 180.0
+    const val MAX_ZOOM_LEVEL = 20.0
+    const val MIN_ZOOM_LEVEL = 4.0
+    const val START_ZOOM = 8.0
+}
+
 class Map {
+    private lateinit var centerMarker: GeoPoint
+    private lateinit var map: MapView
+    private var foundedPlaces = ArrayList<Bookmark>()
+
+    var zoom: Double = MapConstants.START_ZOOM
+        private set
+
+    private fun drawPlace(bookmark: Bookmark) {
+        // TODO
+    }
+
+    private fun drawCurrentPlaces() {
+        this.foundedPlaces.forEach {
+            drawPlace(bookmark = it)
+        }
+    }
+
+    fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
+        this.foundedPlaces = places
+        drawCurrentPlaces()
+    }
+
+    fun clearPlaces() {
+        this.foundedPlaces.clear()
+        // TODO
+    }
+
+    fun redrawMap() {
+        this.map = generateMap()
+        configureMap()
+    }
+
+    private fun configureMap() {
+        this.map.setMultiTouchControls(true)
+        this.map.setScrollableAreaLimitDouble(
+            BoundingBox(
+                MapConstants.NORTH_BORDER,
+                MapConstants.EAST_BORDER,
+                MapConstants.SOUTH_BORDER,
+                MapConstants.WEST_BORDER
+            )
+        )
+
+        // Setup map center and zoom
+        this.map.controller.setZoom(zoom)
+        this.map.controller.setCenter(centerMarker)
+
+        // Redraw previous places
+        drawCurrentPlaces()
+
+        // Scale and scroll map configuration
+        this.map.setMaxZoomLevel(MapConstants.MAX_ZOOM_LEVEL)
+        this.map.setMinZoomLevel(MapConstants.MIN_ZOOM_LEVEL)
+        this.map.setHorizontalMapRepetitionEnabled(false)
+        this.map.setVerticalMapRepetitionEnabled(false)
+        this.map.setScrollableAreaLimitLatitude(
+            MapView.getTileSystem().maxLatitude,
+            MapView.getTileSystem().minLatitude, 0
+        )
+    }
+
     @Composable
     private fun rememberMapLifecycleObserver(mapView: MapView): LifecycleEventObserver =
         remember(mapView) {
@@ -44,18 +117,6 @@ class Map {
         }
 
         Configuration.getInstance().setUserAgentValue(context.getPackageName())
-        mapView.setMultiTouchControls(true)
-        mapView.setScrollableAreaLimitDouble(BoundingBox(85.0, 180.0, -85.0, -180.0))
-        mapView.setMaxZoomLevel(20.0)
-        mapView.controller.setZoom(4);
-        mapView.setMinZoomLevel(4.0)
-        mapView.setHorizontalMapRepetitionEnabled(false)
-        mapView.setVerticalMapRepetitionEnabled(false)
-        mapView.setScrollableAreaLimitLatitude(
-            MapView.getTileSystem().maxLatitude,
-            MapView.getTileSystem().minLatitude, 0
-        )
-
         return mapView
     }
 }
