@@ -26,10 +26,11 @@ private object MapConstants {
 }
 
 class Map {
-    private lateinit var centerMarker: GeoPoint
     private lateinit var map: MapView
     private var foundedPlaces = ArrayList<Bookmark>()
 
+    lateinit var centerMarker: GeoPoint
+        private set
     var zoom: Double = MapConstants.START_ZOOM
         private set
 
@@ -59,32 +60,42 @@ class Map {
     }
 
     private fun configureMap() {
-        this.map.setMultiTouchControls(true)
-        this.map.setScrollableAreaLimitDouble(
-            BoundingBox(
-                MapConstants.NORTH_BORDER,
-                MapConstants.EAST_BORDER,
-                MapConstants.SOUTH_BORDER,
-                MapConstants.WEST_BORDER
+        fun setScrollBorders() {
+            this.map.setScrollableAreaLimitDouble(
+                BoundingBox(
+                    MapConstants.NORTH_BORDER,
+                    MapConstants.EAST_BORDER,
+                    MapConstants.SOUTH_BORDER,
+                    MapConstants.WEST_BORDER
+                )
             )
-        )
+        }
 
-        // Setup map center and zoom
-        this.map.controller.setZoom(zoom)
-        this.map.controller.setCenter(centerMarker)
+        fun setScaleBorders() {
+            this.map.setMaxZoomLevel(MapConstants.MAX_ZOOM_LEVEL)
+            this.map.setMinZoomLevel(MapConstants.MIN_ZOOM_LEVEL)
+            this.map.setHorizontalMapRepetitionEnabled(false)
+            this.map.setVerticalMapRepetitionEnabled(false)
+            this.map.setScrollableAreaLimitLatitude(
+                MapView.getTileSystem().maxLatitude,
+                MapView.getTileSystem().minLatitude, 0
+            )
+        }
 
-        // Redraw previous places
+        fun makeTouchable() {
+            this.map.setMultiTouchControls(true)
+        }
+
+        fun setMapView() {
+            this.map.controller.setZoom(zoom)
+            this.map.controller.setCenter(centerMarker)
+        }
+
+        setScrollBorders()
+        setScaleBorders()
+        makeTouchable()
+        setMapView()
         drawCurrentPlaces()
-
-        // Scale and scroll map configuration
-        this.map.setMaxZoomLevel(MapConstants.MAX_ZOOM_LEVEL)
-        this.map.setMinZoomLevel(MapConstants.MIN_ZOOM_LEVEL)
-        this.map.setHorizontalMapRepetitionEnabled(false)
-        this.map.setVerticalMapRepetitionEnabled(false)
-        this.map.setScrollableAreaLimitLatitude(
-            MapView.getTileSystem().maxLatitude,
-            MapView.getTileSystem().minLatitude, 0
-        )
     }
 
     @Composable
