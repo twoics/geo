@@ -31,19 +31,12 @@ private object MapConstants {
     const val START_ZOOM = 8.0
 }
 
-interface IMap {
-    val centerMapLocation: GeoPoint
-    val zoom: Double
-    fun drawFoundedPlaces(places: ArrayList<Bookmark>)
-    fun clearPlaces()
-    fun redrawMap(): MapView
-}
 
 object Map : IMap {
     private lateinit var map: MapView
     private var foundedPlaces = ArrayList<Bookmark>()
 
-    override lateinit var centerMapLocation: GeoPoint
+    override var centerMapLocation: GeoPoint? = null
         private set
     override var zoom: Double = MapConstants.START_ZOOM
         private set
@@ -68,6 +61,7 @@ object Map : IMap {
         // TODO
     }
 
+    @Composable
     override fun redrawMap(): MapView {
         this.map = generateMap()
         configureMap()

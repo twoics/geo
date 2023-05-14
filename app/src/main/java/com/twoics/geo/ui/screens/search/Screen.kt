@@ -24,7 +24,6 @@ import org.osmdroid.views.MapView
 
 class SearchScreen(
     private var viewModel: SearchViewModel,
-    private var map: MapView
 ) : IScreen {
 
     private lateinit var sizes: SearchScreenSizes
@@ -72,7 +71,7 @@ class SearchScreen(
                         ) {
                             MapContent(
                                 Modifier.fillMaxSize(),
-                                map
+                                viewModel.mapView
                             )
                         }
                     }

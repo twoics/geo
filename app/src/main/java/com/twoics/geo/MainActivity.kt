@@ -1,7 +1,6 @@
 package com.twoics.geo
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.twoics.geo.data.repository.TestBookmarksRepository
+import com.twoics.geo.map.Map
 import com.twoics.geo.nav.Navigation
 import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
@@ -20,7 +20,6 @@ import com.twoics.geo.ui.screens.details.DetailsScreen
 import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
-import com.twoics.geo.ui.screens.search.rememberMapViewWithLifecycle
 import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
 import com.twoics.geo.ui.theme.GeoTheme
 
@@ -37,12 +36,11 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController, startDestination = Routes.SEARCH) {
                         composable(Routes.SEARCH) {
-                            Log.e("SEARCH", "I'm here")
                             SearchScreen(
                                 SearchViewModel(
                                     navigation = navigation,
-                                ),
-                                map = rememberMapViewWithLifecycle()
+                                    map = Map
+                                )
                             ).Screen()
                         }
                         composable(Routes.BOOKMARKS) {
