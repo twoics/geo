@@ -1,6 +1,7 @@
 package com.twoics.geo.map
 
 import android.content.Context
+import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import org.osmdroid.events.ZoomEvent
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Polygon
 
 
 private object MapConstants {
@@ -29,14 +31,18 @@ private object MapConstants {
     const val MAX_ZOOM_LEVEL = 20.0
     const val MIN_ZOOM_LEVEL = 4.0
     const val START_ZOOM = 8.0
+
+    val SEARCH_AREA_COLOR = Color.argb(100, 158, 173, 200)
+    val SEARCH_AREA_BORDER_COLOR = Color.argb(180, 158, 173, 200)
 }
 
 
 object Map : IMap {
     private lateinit var map: MapView
+    private var areaRadius: Double = 1000.0
     private var foundedPlaces = ArrayList<Bookmark>()
-
-    override var centerMapLocation: GeoPoint? = null
+    private var searchAreaPolygon = Polygon()
+    override var centerMapLocation: GeoPoint? = GeoPoint(56.0, 92.0)
         private set
     override var zoom: Double = MapConstants.START_ZOOM
         private set
@@ -59,6 +65,24 @@ object Map : IMap {
     override fun clearPlaces() {
         this.foundedPlaces.clear()
         // TODO
+    }
+
+    private fun drawCircleByRadius() {
+        this.searchAreaPolygon.points = Polygon.pointsAsCircle(
+            GeoPoint(
+                this.centerMapLocation!!.latitude,
+                this.centerMapLocation!!.longitude
+            ),
+            this.areaRadius
+        )
+        this.searchAreaPolygon.fillColor = MapConstants.SEARCH_AREA_COLOR
+        this.searchAreaPolygon.strokeColor = MapConstants.SEARCH_AREA_BORDER_COLOR
+
+    }
+
+    override fun drawSearchCircle(radius: Double) {
+        this.areaRadius = radius
+        drawCircleByRadius()
     }
 
     @Composable
@@ -101,7 +125,7 @@ object Map : IMap {
         }
 
         fun setMapListeners() {
-            fun setMarkerCenter(point: IGeoPoint) {
+            fun setMapCenter(point: IGeoPoint) {
                 this.centerMapLocation = GeoPoint(point)
             }
 
@@ -111,15 +135,27 @@ object Map : IMap {
 
             this.map.setMapListener(DelayedMapListener(object : MapListener {
                 override fun onScroll(paramScrollEvent: ScrollEvent): Boolean {
-                    setMarkerCenter(map.mapCenter)
+                    setMapCenter(map.mapCenter)
+                    drawCircleByRadius()
                     return true
                 }
 
                 override fun onZoom(event: ZoomEvent): Boolean {
                     setCurrentZoom(map.zoomLevelDouble)
+                    setMapCenter(map.mapCenter)
+                    drawCircleByRadius()
                     return false
                 }
             }))
+        }
+
+        fun configureSearchArea() {
+            if (this.map.overlays.isNotEmpty()) {
+                this.map.overlays.clear()
+            }
+            this.searchAreaPolygon = Polygon()
+            drawCircleByRadius()
+            this.map.overlays.add(this.searchAreaPolygon)
         }
 
         setScrollBorders()
@@ -128,6 +164,7 @@ object Map : IMap {
         setMapView()
         setMapListeners()
         drawCurrentPlaces()
+        configureSearchArea()
     }
 
     @Composable
