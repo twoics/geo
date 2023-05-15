@@ -1,5 +1,6 @@
 package com.twoics.geo.ui.screens.search
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.osmdroid.views.MapView
 
+private object SearchModelConstant {
+    const val MAX_SEARCH_AREA_METERS = 5000
+    const val MIN_SEARCH_AREA_METERS = 500
+}
 
 class SearchViewModel(
     private val navigation: INavigation,
@@ -30,6 +35,9 @@ class SearchViewModel(
     val mapView: MapView
         @Composable
         get() = map.redrawMap()
+
+    val maxSearchRadius = SearchModelConstant.MAX_SEARCH_AREA_METERS
+    val minSearchRadius = SearchModelConstant.MIN_SEARCH_AREA_METERS
 
     init {
         viewModelScope.launch {
@@ -47,7 +55,8 @@ class SearchViewModel(
 
             is SearchEvent.RadiusChanged -> {
                 viewModelScope.launch {
-                    updateRadius(event.value)
+                    _radius = event.value
+                    redrawSearchCircle(event.value)
                 }
             }
 
@@ -66,8 +75,10 @@ class SearchViewModel(
         _selectedTypes.add(bookmarkType)
     }
 
-    private fun updateRadius(value: Float) {
-        _radius = value
+    private fun redrawSearchCircle(value: Float) {
+        val radius = value * (maxSearchRadius - minSearchRadius) + minSearchRadius
+        map.drawSearchCircle(radius.toDouble())
+        Log.e("RADIUS", radius.toString())
     }
 
     private fun sendUiEvent(event: UiEvent) {

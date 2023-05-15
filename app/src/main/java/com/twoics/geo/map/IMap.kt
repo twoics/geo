@@ -6,7 +6,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 
 interface IMap {
-    val centerMapLocation: GeoPoint?
+    val centerMapLocation: GeoPoint
     val zoom: Double
 
     fun drawFoundedPlaces(places: ArrayList<Bookmark>)

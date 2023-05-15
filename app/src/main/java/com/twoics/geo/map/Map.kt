@@ -63,7 +63,7 @@ class Map(
     }
 
     override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
-        this.foundedPlaces = places
+        foundedPlaces = places
         drawCurrentPlaces()
     }
 
@@ -79,17 +79,18 @@ class Map(
     private fun drawCircleByRadius() {
         this.searchAreaPolygon.points = Polygon.pointsAsCircle(
             GeoPoint(
-                this.centerMapLocation.latitude,
-                this.centerMapLocation.longitude
+                centerMapLocation.latitude,
+                centerMapLocation.longitude
             ),
-            this.areaRadius
+            areaRadius
         )
-        this.searchAreaPolygon.fillColor = MapConstants.SEARCH_AREA_COLOR
-        this.searchAreaPolygon.strokeColor = MapConstants.SEARCH_AREA_BORDER_COLOR
+        searchAreaPolygon.fillColor = MapConstants.SEARCH_AREA_COLOR
+        searchAreaPolygon.strokeColor = MapConstants.SEARCH_AREA_BORDER_COLOR
+        map.invalidate()
     }
 
     override fun drawSearchCircle(radius: Double) {
-        this.areaRadius = radius
+        areaRadius = radius
         drawCircleByRadius()
     }
 
@@ -102,7 +103,7 @@ class Map(
 
     private fun configureMap() {
         fun setScrollBorders() {
-            this.map.setScrollableAreaLimitDouble(
+            map.setScrollableAreaLimitDouble(
                 BoundingBox(
                     MapConstants.NORTH_BORDER,
                     MapConstants.EAST_BORDER,
@@ -113,28 +114,28 @@ class Map(
         }
 
         fun setScaleBorders() {
-            this.map.maxZoomLevel = MapConstants.MAX_ZOOM_LEVEL
-            this.map.minZoomLevel = MapConstants.MIN_ZOOM_LEVEL
-            this.map.isHorizontalMapRepetitionEnabled = false
-            this.map.isVerticalMapRepetitionEnabled = false
-            this.map.setScrollableAreaLimitLatitude(
+            map.maxZoomLevel = MapConstants.MAX_ZOOM_LEVEL
+            map.minZoomLevel = MapConstants.MIN_ZOOM_LEVEL
+            map.isHorizontalMapRepetitionEnabled = false
+            map.isVerticalMapRepetitionEnabled = false
+            map.setScrollableAreaLimitLatitude(
                 MapView.getTileSystem().maxLatitude,
                 MapView.getTileSystem().minLatitude, 0
             )
         }
 
         fun makeTouchable() {
-            this.map.setMultiTouchControls(true)
+            map.setMultiTouchControls(true)
         }
 
         fun setMapView() {
-            this.map.controller.setZoom(zoom)
-            this.map.controller.setCenter(centerMapLocation)
+            map.controller.setZoom(zoom)
+            map.controller.setCenter(centerMapLocation)
         }
 
         fun setMapListeners() {
             fun setMapCenter(point: IGeoPoint) {
-                this.centerMapLocation = GeoPoint(point)
+                centerMapLocation = GeoPoint(point)
             }
 
             fun setCurrentZoom(zoom: Double) {
@@ -158,12 +159,12 @@ class Map(
         }
 
         fun configureSearchArea() {
-            if (this.map.overlays.isNotEmpty()) {
-                this.map.overlays.clear()
+            if (map.overlays.isNotEmpty()) {
+                map.overlays.clear()
             }
-            this.searchAreaPolygon = Polygon()
+            searchAreaPolygon = Polygon()
             drawCircleByRadius()
-            this.map.overlays.add(this.searchAreaPolygon)
+            map.overlays.add(this.searchAreaPolygon)
         }
 
         setScrollBorders()

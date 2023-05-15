@@ -209,12 +209,12 @@ class SearchScreen(
             {
                 // TODO MIN MAX from ViewModel
                 Text(
-                    text = "50m",
+                    text = "${viewModel.minSearchRadius}m",
                     modifier = Modifier.padding(0.dp),
                     color = Color.Gray
                 )
                 Text(
-                    text = "2000m",
+                    text = "${viewModel.maxSearchRadius}m",
                     modifier = Modifier.padding(0.dp),
                     color = Color.Gray
                 )
