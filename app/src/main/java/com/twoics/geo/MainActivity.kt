@@ -22,11 +22,17 @@ import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
 import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
 import com.twoics.geo.ui.theme.GeoTheme
+import org.osmdroid.util.GeoPoint
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repository = TestBookmarksRepository()
+        val map = Map(
+            defaultAreaRadius = 1000.0,
+            defaultMapLocation = GeoPoint(56.0, 93.0)
+        )
+
         setContent {
             GeoTheme {
                 // A surface container using the 'background' color from the theme
@@ -39,7 +45,7 @@ class MainActivity : ComponentActivity() {
                             SearchScreen(
                                 SearchViewModel(
                                     navigation = navigation,
-                                    map = Map
+                                    map = map
                                 )
                             ).Screen()
                         }

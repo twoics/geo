@@ -30,26 +30,31 @@ private object MapConstants {
     const val EAST_BORDER = 180.0
     const val MAX_ZOOM_LEVEL = 20.0
     const val MIN_ZOOM_LEVEL = 4.0
-    const val START_ZOOM = 8.0
+    const val START_ZOOM = 12.0
 
     val SEARCH_AREA_COLOR = Color.argb(100, 158, 173, 200)
     val SEARCH_AREA_BORDER_COLOR = Color.argb(180, 158, 173, 200)
 }
 
 
-object Map : IMap {
+class Map(
+    defaultAreaRadius: Double,
+    defaultMapLocation: GeoPoint
+) : IMap {
     private lateinit var map: MapView
-    private var areaRadius: Double = 1000.0
+    private lateinit var searchAreaPolygon: Polygon
+
+    private var areaRadius: Double = defaultAreaRadius
     private var foundedPlaces = ArrayList<Bookmark>()
-    private var searchAreaPolygon = Polygon()
-    override var centerMapLocation: GeoPoint? = GeoPoint(56.0, 92.0)
+
+    override var centerMapLocation: GeoPoint = defaultMapLocation
         private set
     override var zoom: Double = MapConstants.START_ZOOM
         private set
 
     private fun drawCurrentPlaces() {
         fun drawPlace(bookmark: Bookmark) {
-            // TODO
+            TODO("Not implemented")
         }
 
         this.foundedPlaces.forEach {
@@ -64,20 +69,23 @@ object Map : IMap {
 
     override fun clearPlaces() {
         this.foundedPlaces.clear()
-        // TODO
+        TODO("Not implemented")
+    }
+
+    override fun focusOnPlace(place: Bookmark) {
+        TODO("Not yet implemented")
     }
 
     private fun drawCircleByRadius() {
         this.searchAreaPolygon.points = Polygon.pointsAsCircle(
             GeoPoint(
-                this.centerMapLocation!!.latitude,
-                this.centerMapLocation!!.longitude
+                this.centerMapLocation.latitude,
+                this.centerMapLocation.longitude
             ),
             this.areaRadius
         )
         this.searchAreaPolygon.fillColor = MapConstants.SEARCH_AREA_COLOR
         this.searchAreaPolygon.strokeColor = MapConstants.SEARCH_AREA_BORDER_COLOR
-
     }
 
     override fun drawSearchCircle(radius: Double) {
@@ -105,10 +113,10 @@ object Map : IMap {
         }
 
         fun setScaleBorders() {
-            this.map.setMaxZoomLevel(MapConstants.MAX_ZOOM_LEVEL)
-            this.map.setMinZoomLevel(MapConstants.MIN_ZOOM_LEVEL)
-            this.map.setHorizontalMapRepetitionEnabled(false)
-            this.map.setVerticalMapRepetitionEnabled(false)
+            this.map.maxZoomLevel = MapConstants.MAX_ZOOM_LEVEL
+            this.map.minZoomLevel = MapConstants.MIN_ZOOM_LEVEL
+            this.map.isHorizontalMapRepetitionEnabled = false
+            this.map.isVerticalMapRepetitionEnabled = false
             this.map.setScrollableAreaLimitLatitude(
                 MapView.getTileSystem().maxLatitude,
                 MapView.getTileSystem().minLatitude, 0
@@ -196,7 +204,7 @@ object Map : IMap {
             }
         }
 
-        Configuration.getInstance().setUserAgentValue(context.getPackageName())
+        Configuration.getInstance().userAgentValue = context.packageName
         return mapView
     }
 }
