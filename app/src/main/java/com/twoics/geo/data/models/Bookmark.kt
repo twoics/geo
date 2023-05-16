@@ -22,8 +22,8 @@ data class Bookmark(
     var city: String,
     var street: String,
     var house: String,
-    var lat: Int,
-    var long: Int,
+    var lat: Double,
+    var long: Double,
     var description: String,
     var type: BookmarkType
 ) : Parcelable

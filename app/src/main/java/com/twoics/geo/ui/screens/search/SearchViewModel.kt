@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.map.IMap
 import com.twoics.geo.nav.INavigation
@@ -62,7 +63,38 @@ class SearchViewModel(
 
             is SearchEvent.OnSearchClick -> {
                 sendUiEvent(UiEvent.ShowSnackbar("Empty amogus"))
-                navigation.navigate(Routes.BOOKMARKS)
+                Log.d("SEARCH", "\tCenter: ${map.centerMapLocation}\n\tRadius: ${map.areaRadius}")
+//                navigation.navigate(Routes.BOOKMARKS)
+//                return
+                map.drawFoundedPlaces(
+                    arrayListOf(
+                        Bookmark(
+                            id = 1,
+                            name = "Театр Пушкина",
+                            country = "Россиия",
+                            city = "Красноярск",
+                            street = "Мира",
+                            house = "24",
+                            lat = 56.0,
+                            long = 93.0,
+                            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit Morbi ac massa vehicula magna fringilla tempus.Morbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempus..",
+                            type = BookmarkType.CULTURE
+                        ),
+                        Bookmark(
+                            id = 2,
+                            name = "Vo Gan Udon",
+                            country = "Россиия",
+                            city = "Красноярск",
+                            street = "Ленина",
+                            house = "11",
+                            lat = 56.0,
+                            long = 91.0,
+                            description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
+                            type = BookmarkType.FOOD
+                        ),
+                    )
+                )
+                //                navigation.navigate(Routes.BOOKMARKS)
             }
         }
     }
@@ -78,7 +110,6 @@ class SearchViewModel(
     private fun redrawSearchCircle(value: Float) {
         val radius = value * (maxSearchRadius - minSearchRadius) + minSearchRadius
         map.drawSearchCircle(radius.toDouble())
-        Log.e("RADIUS", radius.toString())
     }
 
     private fun sendUiEvent(event: UiEvent) {

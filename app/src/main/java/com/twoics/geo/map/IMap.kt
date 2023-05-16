@@ -7,7 +7,7 @@ import org.osmdroid.views.MapView
 
 interface IMap {
     val centerMapLocation: GeoPoint
-    val zoom: Double
+    val areaRadius: Double
 
     fun drawFoundedPlaces(places: ArrayList<Bookmark>)
     fun clearPlaces()

@@ -20,6 +20,7 @@ import org.osmdroid.events.ZoomEvent
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polygon
 
 
@@ -31,6 +32,7 @@ private object MapConstants {
     const val MAX_ZOOM_LEVEL = 20.0
     const val MIN_ZOOM_LEVEL = 4.0
     const val START_ZOOM = 12.0
+    const val SEARCH_AREA_ID = "map"
 
     val SEARCH_AREA_COLOR = Color.argb(100, 158, 173, 200)
     val SEARCH_AREA_BORDER_COLOR = Color.argb(180, 158, 173, 200)
@@ -44,22 +46,24 @@ class Map(
     private lateinit var map: MapView
     private lateinit var searchAreaPolygon: Polygon
 
-    private var areaRadius: Double = defaultAreaRadius
     private var foundedPlaces = ArrayList<Bookmark>()
+    private var zoom: Double = MapConstants.START_ZOOM
 
+    override var areaRadius: Double = defaultAreaRadius
     override var centerMapLocation: GeoPoint = defaultMapLocation
-        private set
-    override var zoom: Double = MapConstants.START_ZOOM
         private set
 
     private fun drawCurrentPlaces() {
         fun drawPlace(bookmark: Bookmark) {
-            TODO("Not implemented")
+            val marker = Marker(map)
+            marker.position = GeoPoint(bookmark.lat, bookmark.long)
+            map.overlays.add(marker);
         }
 
         this.foundedPlaces.forEach {
             drawPlace(bookmark = it)
         }
+        map.invalidate()
     }
 
     override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
@@ -69,6 +73,7 @@ class Map(
 
     override fun clearPlaces() {
         this.foundedPlaces.clear()
+
         TODO("Not implemented")
     }
 
@@ -159,8 +164,8 @@ class Map(
         }
 
         fun configureSearchArea() {
-            if (map.overlays.isNotEmpty()) {
-                map.overlays.clear()
+            if (this::searchAreaPolygon.isInitialized && searchAreaPolygon in map.overlays) {
+                map.overlays.remove(searchAreaPolygon)
             }
             searchAreaPolygon = Polygon()
             drawCircleByRadius()
