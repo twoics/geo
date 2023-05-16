@@ -65,13 +65,14 @@ class Map(
             map.overlays.add(marker);
         }
 
-        this.foundedPlaces.forEach {
+        foundedPlaces.forEach {
             drawPlace(mapMarker = it)
         }
         map.invalidate()
     }
 
     override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
+        clearPlaces()
         places.forEach {
             foundedPlaces.add(
                 MapMarker(
@@ -84,9 +85,11 @@ class Map(
     }
 
     override fun clearPlaces() {
-        this.foundedPlaces.clear()
-
-        TODO("Not implemented")
+        foundedPlaces.forEach {
+            map.overlays.remove(it.marker)
+        }
+        foundedPlaces.clear()
+        map.invalidate()
     }
 
     override fun focusOnPlace(place: Bookmark) {
@@ -94,7 +97,7 @@ class Map(
     }
 
     private fun drawCircleByRadius() {
-        this.searchAreaPolygon.points = Polygon.pointsAsCircle(
+        searchAreaPolygon.points = Polygon.pointsAsCircle(
             GeoPoint(
                 centerMapLocation.latitude,
                 centerMapLocation.longitude
@@ -181,7 +184,7 @@ class Map(
             }
             searchAreaPolygon = Polygon()
             drawCircleByRadius()
-            map.overlays.add(this.searchAreaPolygon)
+            map.overlays.add(searchAreaPolygon)
         }
 
         setScrollBorders()
