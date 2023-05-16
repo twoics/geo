@@ -12,7 +12,7 @@ interface IMap {
     fun drawFoundedPlaces(places: ArrayList<Bookmark>)
     fun clearPlaces()
     fun drawSearchCircle(radius: Double)
-    fun focusOnPlace(place: Bookmark)
+    fun focusedDrawBookmark(place: Bookmark)
 
     @Composable
     fun redrawMap(): MapView

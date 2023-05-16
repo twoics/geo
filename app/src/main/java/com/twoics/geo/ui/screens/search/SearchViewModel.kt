@@ -91,7 +91,20 @@ class SearchViewModel(
             is SearchEvent.OnSearchClick -> {
                 sendUiEvent(UiEvent.ShowSnackbar("Empty amogus"))
                 Log.d("SEARCH", "\tCenter: ${map.centerMapLocation}\n\tRadius: ${map.areaRadius}")
-                map.clearPlaces()
+                map.focusedDrawBookmark(
+                    Bookmark(
+                        id = 2,
+                        name = "Vo Gan Udon",
+                        country = "Россиия",
+                        city = "Красноярск",
+                        street = "Ленина",
+                        house = "11",
+                        lat = 56.0,
+                        long = 91.0,
+                        description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
+                        type = BookmarkType.FOOD
+                    ),
+                )
                 //                navigation.navigate(Routes.BOOKMARKS)
                 //                return
                 //                navigation.navigate(Routes.BOOKMARKS)

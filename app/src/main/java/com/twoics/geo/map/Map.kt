@@ -32,6 +32,7 @@ private object MapConstants {
     const val MAX_ZOOM_LEVEL = 20.0
     const val MIN_ZOOM_LEVEL = 4.0
     const val START_ZOOM = 12.0
+    const val DETAIL_ZOOM = 14.0
 
     val SEARCH_AREA_COLOR = Color.argb(100, 158, 173, 200)
     val SEARCH_AREA_BORDER_COLOR = Color.argb(180, 158, 173, 200)
@@ -92,8 +93,26 @@ class Map(
         map.invalidate()
     }
 
-    override fun focusOnPlace(place: Bookmark) {
-        TODO("Not yet implemented")
+    override fun focusedDrawBookmark(place: Bookmark) {
+        fun moveMapToPlace() {
+            centerMapLocation = GeoPoint(place.lat, place.long)
+            zoom = MapConstants.DETAIL_ZOOM
+            map.controller.setCenter(centerMapLocation)
+            map.controller.setZoom(MapConstants.DETAIL_ZOOM)
+        }
+        clearPlaces()
+
+        foundedPlaces.add(
+            MapMarker(
+                bookmark = place,
+                marker = Marker(map)
+            )
+        )
+
+        moveMapToPlace()
+
+        drawCurrentPlaces()
+        drawCircleByRadius()
     }
 
     private fun drawCircleByRadius() {
