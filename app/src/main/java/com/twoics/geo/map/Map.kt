@@ -32,12 +32,15 @@ private object MapConstants {
     const val MAX_ZOOM_LEVEL = 20.0
     const val MIN_ZOOM_LEVEL = 4.0
     const val START_ZOOM = 12.0
-    const val SEARCH_AREA_ID = "map"
 
     val SEARCH_AREA_COLOR = Color.argb(100, 158, 173, 200)
     val SEARCH_AREA_BORDER_COLOR = Color.argb(180, 158, 173, 200)
 }
 
+private data class MapMarker(
+    val bookmark: Bookmark,
+    val marker: Marker
+)
 
 class Map(
     defaultAreaRadius: Double,
@@ -46,7 +49,7 @@ class Map(
     private lateinit var map: MapView
     private lateinit var searchAreaPolygon: Polygon
 
-    private var foundedPlaces = ArrayList<Bookmark>()
+    private var foundedPlaces = ArrayList<MapMarker>()
     private var zoom: Double = MapConstants.START_ZOOM
 
     override var areaRadius: Double = defaultAreaRadius
@@ -54,20 +57,29 @@ class Map(
         private set
 
     private fun drawCurrentPlaces() {
-        fun drawPlace(bookmark: Bookmark) {
-            val marker = Marker(map)
+        fun drawPlace(mapMarker: MapMarker) {
+            val marker = mapMarker.marker
+            val bookmark = mapMarker.bookmark
+
             marker.position = GeoPoint(bookmark.lat, bookmark.long)
             map.overlays.add(marker);
         }
 
         this.foundedPlaces.forEach {
-            drawPlace(bookmark = it)
+            drawPlace(mapMarker = it)
         }
         map.invalidate()
     }
 
     override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
-        foundedPlaces = places
+        places.forEach {
+            foundedPlaces.add(
+                MapMarker(
+                    bookmark = it,
+                    marker = Marker(map)
+                )
+            )
+        }
         drawCurrentPlaces()
     }
 
