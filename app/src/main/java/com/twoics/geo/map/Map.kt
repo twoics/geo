@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
+import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.DelayedMapListener
@@ -70,11 +71,21 @@ class Map(
         }
 
         fun drawPlace(mapMarker: MapMarker) {
+            fun setPlaceIcon(mapMarker: MapMarker) {
+                val context = map.context
+                val place = mapMarker.bookmark
+
+                val icon = PlaceIcons.getMapIcon(place, context)
+                mapMarker.marker.icon = icon
+                mapMarker.marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            }
+
             val marker = mapMarker.marker
             val bookmark = mapMarker.bookmark
 
             marker.position = GeoPoint(bookmark.lat, bookmark.long)
             addMarkerClickEvent(mapMarker)
+            setPlaceIcon(mapMarker)
             map.overlays.add(marker);
         }
 
@@ -112,8 +123,8 @@ class Map(
             map.controller.setCenter(centerMapLocation)
             map.controller.setZoom(MapConstants.DETAIL_ZOOM)
         }
-        clearPlaces()
 
+        clearPlaces()
         foundedPlaces.add(
             MapMarker(
                 bookmark = place,

@@ -19,8 +19,31 @@ import com.twoics.geo.R
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
+import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.views.MapView
 
+
+private object ButtonsIcons {
+    val SPORT_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.SPORT))
+    val NATURE_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.NATURE))
+    val FOOD_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.FOOD))
+    val CULTURE_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.CULTURE))
+}
+
+private object ButtonsColors {
+    val SPORT_BUTTON = Color(0xFFEEF7FF)
+    val NATURE_BUTTON = Color(0xFFEAFFF2)
+    val FOOD_BUTTON = Color(0xFFFFF4E8)
+    val CULTURE_BUTTON = Color(0xFFFFE9E9)
+}
 
 class SearchScreen(
     private var viewModel: SearchViewModel,
@@ -136,55 +159,6 @@ class SearchScreen(
     }
 
     @Composable
-    private fun CultureButton() {
-        val icon = painterResource(id = R.drawable.arch)
-        val backgroundColor = Color(0xFFFFE9E9)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.CULTURE
-        )
-    }
-
-    @Composable
-    private fun FoodButton() {
-        val icon = painterResource(id = R.drawable.food)
-        val backgroundColor = Color(0xFFFFF4E8)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.FOOD
-        )
-    }
-
-    @Composable
-    private fun NatureButton() {
-        val icon = painterResource(id = R.drawable.nature)
-        val backgroundColor = Color(0xFFEAFFF2)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.NATURE
-        )
-    }
-
-    @Composable
-    private fun SportButton() {
-        val icon = painterResource(id = R.drawable.sport)
-        val backgroundColor = Color(0xFFEEF7FF)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.SPORT
-        )
-    }
-
-
-    @Composable
     private fun RadiusSlider() {
         Column(
             modifier = Modifier.padding(sizes.sliderHorizontalPadding, 0.dp)
@@ -264,10 +238,27 @@ class SearchScreen(
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CultureButton()
-                    FoodButton()
-                    NatureButton()
-                    SportButton()
+
+                    FilterButton(
+                        icon = ButtonsIcons.CULTURE_ICON,
+                        backgroundColor = ButtonsColors.CULTURE_BUTTON,
+                        bookmarkType = BookmarkType.CULTURE
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.NATURE_ICON,
+                        backgroundColor = ButtonsColors.NATURE_BUTTON,
+                        bookmarkType = BookmarkType.NATURE
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.SPORT_ICON,
+                        backgroundColor = ButtonsColors.SPORT_BUTTON,
+                        bookmarkType = BookmarkType.SPORT
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.FOOD_ICON,
+                        backgroundColor = ButtonsColors.FOOD_BUTTON,
+                        bookmarkType = BookmarkType.FOOD
+                    )
                 }
 
                 RadiusSlider()
