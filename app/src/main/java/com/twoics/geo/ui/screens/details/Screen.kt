@@ -22,6 +22,7 @@ import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
+import com.twoics.geo.utils.PlaceIcons
 
 class DetailsScreen(
     private var viewModel: DetailsViewModel,
@@ -93,13 +94,13 @@ class DetailsScreen(
     }
 
     @Composable
-    private fun TypeIcon() {
+    private fun TypeIcon(bookmark: Bookmark) {
         Column(
             modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
             horizontalAlignment = Alignment.Start
         ) {
             Icon(
-                painter = painterResource(id = com.twoics.geo.R.drawable.arch),
+                painter = painterResource(PlaceIcons.getIconId(bookmark.type)),
                 tint = Color.Unspecified,
                 modifier = Modifier.size(sizes.iconSize),
                 contentDescription = null
@@ -197,7 +198,7 @@ class DetailsScreen(
                             .padding(sizes.contentPaddings)
                     ) {
 
-                        TypeIcon()
+                        TypeIcon(bookmark)
                         Box(
                             Modifier.width(sizes.placeWidth)
                         ) {
