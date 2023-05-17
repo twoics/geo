@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.map.IMap
+import com.twoics.geo.map.IMapDataTransfer
+import com.twoics.geo.map.MapEvent
 import com.twoics.geo.nav.INavigation
 import com.twoics.geo.ui.shared.event.UiEvent
 import kotlinx.coroutines.channels.Channel
@@ -24,7 +26,8 @@ private object SearchModelConstant {
 
 class SearchViewModel(
     private val navigation: INavigation,
-    private val map: IMap
+    private val map: IMap,
+    private val mapDataTransfer: IMapDataTransfer
 ) : ViewModel() {
     private var _radius by mutableStateOf(Float.MIN_VALUE)
     private var _selectedTypes = arrayListOf<BookmarkType>()
@@ -41,7 +44,13 @@ class SearchViewModel(
 
     init {
         viewModelScope.launch {
-
+            mapDataTransfer.mapEventsFlow.collect {
+                when (it) {
+                    is MapEvent.PeakPlace -> {
+                        Log.d("SEARCH RECEIVE", it.bookmark.name)
+                    }
+                }
+            }
         }
     }
 

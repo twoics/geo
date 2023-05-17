@@ -45,7 +45,8 @@ private data class MapMarker(
 
 class Map(
     defaultAreaRadius: Double,
-    defaultMapLocation: GeoPoint
+    defaultMapLocation: GeoPoint,
+    private val mapDataTransfer: IMapDataTransfer
 ) : IMap {
     private lateinit var map: MapView
     private lateinit var searchAreaPolygon: Polygon
@@ -58,11 +59,22 @@ class Map(
         private set
 
     private fun drawCurrentPlaces() {
+        fun addMarkerClickEvent(mapMarker: MapMarker) {
+            val marker = mapMarker.marker
+            val bookmark = mapMarker.bookmark
+
+            marker.setOnMarkerClickListener { _, _ ->
+                mapDataTransfer.sendEvent(MapEvent.PeakPlace(bookmark))
+                true
+            }
+        }
+
         fun drawPlace(mapMarker: MapMarker) {
             val marker = mapMarker.marker
             val bookmark = mapMarker.bookmark
 
             marker.position = GeoPoint(bookmark.lat, bookmark.long)
+            addMarkerClickEvent(mapMarker)
             map.overlays.add(marker);
         }
 

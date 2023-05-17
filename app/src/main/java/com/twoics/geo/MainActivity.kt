@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.twoics.geo.data.repository.TestBookmarksRepository
 import com.twoics.geo.map.Map
+import com.twoics.geo.map.MapDataTransfer
 import com.twoics.geo.nav.Navigation
 import com.twoics.geo.nav.Routes
 import com.twoics.geo.ui.screens.bookmarks.BookmarksScreen
@@ -28,9 +29,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val repository = TestBookmarksRepository()
+        val mapDataTransfer = MapDataTransfer()
+
         val map = Map(
             defaultAreaRadius = 1000.0,
-            defaultMapLocation = GeoPoint(56.0, 93.0)
+            defaultMapLocation = GeoPoint(56.0, 93.0),
+            mapDataTransfer
         )
 
         setContent {
@@ -45,7 +49,8 @@ class MainActivity : ComponentActivity() {
                             SearchScreen(
                                 SearchViewModel(
                                     navigation = navigation,
-                                    map = map
+                                    map = map,
+                                    mapDataTransfer
                                 )
                             ).Screen()
                         }
