@@ -50,7 +50,8 @@ class MainActivity : ComponentActivity() {
                                 SearchViewModel(
                                     navigation = navigation,
                                     map = map,
-                                    mapDataTransfer
+                                    mapDataTransfer = mapDataTransfer,
+                                    transmitViewModel = TransmitBookmarkViewModel
                                 )
                             ).Screen()
                         }

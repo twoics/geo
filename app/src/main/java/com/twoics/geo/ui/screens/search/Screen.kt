@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.twoics.geo.R
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.screen.BottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
