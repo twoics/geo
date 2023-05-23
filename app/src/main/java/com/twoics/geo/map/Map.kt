@@ -2,6 +2,7 @@ package com.twoics.geo.map
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -11,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.DelayedMapListener
@@ -74,10 +74,10 @@ class Map(
             fun setPlaceIcon(mapMarker: MapMarker) {
                 val context = map.context
                 val place = mapMarker.bookmark
-
-                val icon = PlaceIcons.getMapIcon(place, context)
-                mapMarker.marker.icon = icon
-                mapMarker.marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+//                TODO
+//                val icon = PlaceIcons.getMapIcon(place, context)
+//                mapMarker.marker.icon = icon
+//                mapMarker.marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             }
 
             val marker = mapMarker.marker
@@ -160,6 +160,8 @@ class Map(
     override fun redrawMap(): MapView {
         this.map = generateMap()
         configureMap()
+        if (this.foundedPlaces.isNotEmpty())
+            Log.d("Mark", this.foundedPlaces.first().marker.toString())
         return this.map
     }
 
@@ -234,8 +236,17 @@ class Map(
         makeTouchable()
         setMapView()
         setMapListeners()
-        drawCurrentPlaces()
+
         configureSearchArea()
+        if (foundedPlaces.isNotEmpty()) {
+            val places = arrayListOf<Bookmark>()
+            foundedPlaces.forEach {
+                places.add(it.bookmark)
+            }
+            drawFoundedPlaces(places)
+        } else {
+            drawCurrentPlaces()
+        }
     }
 
     @Composable
