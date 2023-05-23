@@ -17,16 +17,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.ui.shared.screen.BottomBar
+import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 
 class BookmarksScreen(
     private var viewModel: BookmarksViewModel,
+    private val bottomBar: IBottomBar
 ) : IScreen {
     private lateinit var sizes: BookmarksScreenSizes
 
     @Composable
-    override fun Screen() {
+    override fun Screen(
+
+    ) {
         val bookmarks = viewModel.bookmarks
 
         MaterialTheme {
@@ -38,7 +41,7 @@ class BookmarksScreen(
                         TopBar(viewModel::onEvent)
                     },
                     bottomBar = {
-                        BottomBar()
+                        bottomBar.ComposableBottomBar()
                     }
                 ) { contentPadding ->
                     // Screen content

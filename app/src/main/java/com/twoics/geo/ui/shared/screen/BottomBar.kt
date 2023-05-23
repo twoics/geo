@@ -8,38 +8,45 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.twoics.geo.nav.INavigation
+import com.twoics.geo.nav.Routes
 
-private data class NavigationData(
-    val titles: List<String> = listOf("Search", "Bookmarks"),
-    val icons: List<ImageVector> = listOf(Icons.Filled.Search, Icons.Filled.Favorite)
-)
+class BottomBar(
+    private val navigation: INavigation
+) : IBottomBar {
+    private data class NavigationData(
+        val titles: List<String> = listOf(Routes.SEARCH, Routes.BOOKMARKS),
+        val icons: List<ImageVector> = listOf(Icons.Filled.Search, Icons.Filled.Favorite)
+    )
 
-@Composable
-private fun Navigation() {
-    var selectedItem by remember { mutableStateOf(0) }
-    val navigationData = NavigationData()
+    @Composable
+    private fun Navigation() {
+        var selectedItem by remember { mutableStateOf(0) }
+        val navigationData = NavigationData()
 
-    return BottomNavigation {
-        navigationData.titles.forEachIndexed { index, item ->
-            BottomNavigationItem(
-                icon = { Icon(navigationData.icons[index], contentDescription = null) },
-                label = { Text(item) },
-                selected = selectedItem == index,
-                onClick = {
-                    selectedItem = index
-                }
-            )
+        return BottomNavigation {
+            navigationData.titles.forEachIndexed { index, item ->
+                BottomNavigationItem(
+                    icon = { Icon(navigationData.icons[index], contentDescription = null) },
+                    label = { Text(item) },
+                    selected = selectedItem == index,
+                    onClick = {
+                        selectedItem = index
+                        navigation.navigate(item)
+                    }
+                )
+            }
         }
     }
-}
 
 
-@Composable
-fun BottomBar() {
-    return BottomAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Navigation()
+    @Composable
+    override fun ComposableBottomBar() {
+        return BottomAppBar(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Navigation()
+        }
     }
 }

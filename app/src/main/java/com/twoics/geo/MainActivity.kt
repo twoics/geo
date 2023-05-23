@@ -22,6 +22,8 @@ import com.twoics.geo.ui.screens.details.DetailsViewModel
 import com.twoics.geo.ui.screens.search.SearchScreen
 import com.twoics.geo.ui.screens.search.SearchViewModel
 import com.twoics.geo.ui.shared.dto.TransmitBookmarkViewModel
+import com.twoics.geo.ui.shared.screen.BottomBar
+import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.theme.GeoTheme
 import org.osmdroid.util.GeoPoint
 
@@ -43,6 +45,7 @@ class MainActivity : ComponentActivity() {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
                     val navigation = Navigation(navController)
+                    val bottomBar: IBottomBar = BottomBar(navigation)
 
                     NavHost(navController, startDestination = Routes.SEARCH) {
                         composable(Routes.SEARCH) {
@@ -51,8 +54,9 @@ class MainActivity : ComponentActivity() {
                                     navigation = navigation,
                                     map = map,
                                     mapDataTransfer = mapDataTransfer,
-                                    transmitViewModel = TransmitBookmarkViewModel
-                                )
+                                    transmitViewModel = TransmitBookmarkViewModel,
+                                ),
+                                bottomBar = bottomBar
                             ).Screen()
                         }
                         composable(Routes.BOOKMARKS) {
@@ -62,6 +66,7 @@ class MainActivity : ComponentActivity() {
                                     repository = repository,
                                     transmitViewModel = TransmitBookmarkViewModel
                                 ),
+                                bottomBar = bottomBar
                             ).Screen()
                         }
                         composable(Routes.DETAILS) {
@@ -71,6 +76,7 @@ class MainActivity : ComponentActivity() {
                                     repository = repository,
                                     transmitViewModel = TransmitBookmarkViewModel,
                                 ),
+                                bottomBar = bottomBar
                             ).Screen()
                         }
                     }

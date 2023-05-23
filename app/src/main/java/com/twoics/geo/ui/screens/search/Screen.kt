@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.twoics.geo.data.models.BookmarkType
-import com.twoics.geo.ui.shared.screen.BottomBar
+import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.views.MapView
@@ -46,6 +46,7 @@ private object ButtonsColors {
 
 class SearchScreen(
     private var viewModel: SearchViewModel,
+    private val bottomBar: IBottomBar
 ) : IScreen {
 
     private lateinit var sizes: SearchScreenSizes
@@ -62,7 +63,7 @@ class SearchScreen(
                         TopBar()
                     },
                     bottomBar = {
-                        BottomBar()
+                        bottomBar.ComposableBottomBar()
                     },
                     scaffoldState = scaffoldState
 

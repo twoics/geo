@@ -20,12 +20,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
-import com.twoics.geo.ui.shared.screen.BottomBar
+import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 import com.twoics.geo.utils.PlaceIcons
 
 class DetailsScreen(
     private var viewModel: DetailsViewModel,
+    private val bottomBar: IBottomBar
 ) : IScreen {
     private lateinit var sizes: DetailScreenSizes
 
@@ -41,7 +42,7 @@ class DetailsScreen(
                         TopBar(viewModel::onEvent)
                     },
                     bottomBar = {
-                        BottomBar()
+                        bottomBar.ComposableBottomBar()
                     }
 
                 ) { contentPadding ->
