@@ -38,6 +38,14 @@ class DetailsViewModel(
 
             is DetailsEvent.LikeButtonClick -> {
                 viewModelScope.launch {
+                    repository.insertBookmark(bookmark!!)
+                    navigation.navigate(Routes.BOOKMARKS)
+                }
+            }
+
+            is DetailsEvent.ViewAtMapButtonClick -> {
+                viewModelScope.launch {
+                    // TODO
                     navigation.navigate(Routes.SEARCH)
                 }
             }

@@ -150,11 +150,19 @@ class DetailsScreen(
                 elevation = ButtonDefaults.elevation(0.dp, 0.dp),
 
                 onClick = {
-                    onEvent(
-                        DetailsEvent.LikeButtonClick(
-                            bookmark = bookmark
+                    if (buttonEnabled) {
+                        onEvent(
+                            DetailsEvent.LikeButtonClick(
+                                bookmark = bookmark
+                            )
                         )
-                    )
+                    } else {
+                        onEvent(
+                            DetailsEvent.ViewAtMapButtonClick(
+                                bookmark = bookmark
+                            )
+                        )
+                    }
                 },
                 enabled = buttonEnabled
 

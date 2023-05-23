@@ -16,7 +16,7 @@ enum class BookmarkType {
 @Parcelize
 data class Bookmark(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    var id: Int? = null,
     var name: String,
     var country: String,
     var city: String,

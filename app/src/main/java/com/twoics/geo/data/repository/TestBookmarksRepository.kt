@@ -56,6 +56,17 @@ class TestBookmarksRepository : IBookmarksRepository {
     )
 
     override suspend fun insertBookmark(bookmark: Bookmark) {
+        fun maxId(): Int {
+            var min = bookmarks.first().id
+            bookmarks.forEach { bookmark ->
+                if (bookmark.id!! < min!!) {
+                    min = bookmark.id
+                }
+            }
+            return min!!
+        }
+
+        bookmark.id = maxId() + 1
         bookmarks.add(bookmark);
     }
 
