@@ -7,18 +7,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
+import com.twoics.geo.utils.PlaceIcons
 
 class BookmarksScreen(
     private var viewModel: BookmarksViewModel,
@@ -103,7 +104,7 @@ class BookmarksScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
-                TypeIcon()
+                TypeIcon(bookmark)
                 PlaceInfo(
                     bookmark.name,
                     bookmark.country,
@@ -163,14 +164,13 @@ class BookmarksScreen(
 
     @Composable
     private fun TypeIcon(
-        // TODO Some Enum
+        bookmark: Bookmark
     ) {
         Column(
             Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp)
         ) {
             Icon(
-//                    painter = painterResource(id = com.twoics.geo.R.drawable.arch),
-                Icons.Filled.AccountBox,
+                painter = painterResource(id = PlaceIcons.getIconId(bookmark.type)),
                 tint = Color.Unspecified,
                 modifier = Modifier.size(sizes.iconSize),
                 contentDescription = null
