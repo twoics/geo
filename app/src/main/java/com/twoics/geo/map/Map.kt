@@ -142,6 +142,11 @@ class Map(
 //        drawCircleByRadius()
     }
 
+    override fun showSearchArea(boolean: Boolean) {
+        searchAreaPolygon.isVisible = boolean
+        map.invalidate()
+    }
+
     private fun drawCircleByRadius() {
         searchAreaPolygon.points = Polygon.pointsAsCircle(
             GeoPoint(

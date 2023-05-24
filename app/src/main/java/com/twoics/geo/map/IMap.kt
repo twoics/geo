@@ -14,6 +14,7 @@ interface IMap {
     fun clearPlaces()
     fun drawSearchCircle(radius: Double)
     fun focusedDrawBookmark(place: Bookmark)
+    fun showSearchArea(boolean: Boolean)
 
     @Composable
     fun redrawMap(): MapView

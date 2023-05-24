@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,7 +111,32 @@ class SearchScreen(
         Column {
             TopAppBar(
                 title = {
-                    Text("Search")
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text("Search")
+                        Row() {
+                            val eyeOpen = remember { mutableStateOf(true) }
+
+                            IconButton(onClick = {
+                                viewModel.onEvent(SearchEvent.CleanMapClick)
+                            }) {
+                                Icon(Icons.Filled.Delete, contentDescription = "Clear map")
+                            }
+                            IconButton(onClick = {
+                                eyeOpen.value = !eyeOpen.value
+                                viewModel.onEvent(SearchEvent.HideMapAreaClick(eyeOpen.value))
+                            }) {
+                                Icon(
+                                    if (eyeOpen.value) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = "Hide radius"
+                                )
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

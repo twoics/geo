@@ -109,6 +109,14 @@ class SearchViewModel(
                 )
 //                Log.d("DETAIL", placesApi.getPlaceDetail(places.first()).name)
             }
+
+            is SearchEvent.CleanMapClick -> {
+                map.clearPlaces()
+            }
+
+            is SearchEvent.HideMapAreaClick -> {
+                map.showSearchArea(event.hide)
+            }
         }
     }
 
