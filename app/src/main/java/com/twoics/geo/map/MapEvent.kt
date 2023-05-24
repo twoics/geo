@@ -1,7 +1,7 @@
 package com.twoics.geo.map
 
-import com.twoics.geo.data.models.Bookmark
+import com.twoics.geo.api.PlacesResponse
 
 sealed class MapEvent {
-    data class PeakPlace(val bookmark: Bookmark) : MapEvent()
+    data class PeakPlace(val place: PlacesResponse) : MapEvent()
 }

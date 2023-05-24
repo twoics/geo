@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
+import com.twoics.geo.api.PlacesResponse
 import com.twoics.geo.data.models.Bookmark
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
@@ -40,7 +41,7 @@ private object MapConstants {
 }
 
 private data class MapMarker(
-    val bookmark: Bookmark,
+    val place: PlacesResponse,
     val marker: Marker
 )
 
@@ -62,10 +63,10 @@ class Map(
     private fun drawCurrentPlaces() {
         fun addMarkerClickEvent(mapMarker: MapMarker) {
             val marker = mapMarker.marker
-            val bookmark = mapMarker.bookmark
+            val place = mapMarker.place
 
             marker.setOnMarkerClickListener { _, _ ->
-                mapDataTransfer.sendEvent(MapEvent.PeakPlace(bookmark))
+                mapDataTransfer.sendEvent(MapEvent.PeakPlace(place))
                 true
             }
         }
@@ -73,7 +74,7 @@ class Map(
         fun drawPlace(mapMarker: MapMarker) {
             fun setPlaceIcon(mapMarker: MapMarker) {
                 val context = map.context
-                val place = mapMarker.bookmark
+                val place = mapMarker.place
 //                TODO
 //                val icon = PlaceIcons.getMapIcon(place, context)
 //                mapMarker.marker.icon = icon
@@ -81,7 +82,7 @@ class Map(
             }
 
             val marker = mapMarker.marker
-            val bookmark = mapMarker.bookmark
+            val bookmark = mapMarker.place
 
             marker.position = GeoPoint(bookmark.lat, bookmark.long)
             addMarkerClickEvent(mapMarker)
@@ -95,12 +96,12 @@ class Map(
         map.invalidate()
     }
 
-    override fun drawFoundedPlaces(places: ArrayList<Bookmark>) {
+    override fun drawFoundedPlaces(places: ArrayList<PlacesResponse>) {
         clearPlaces()
         places.forEach {
             foundedPlaces.add(
                 MapMarker(
-                    bookmark = it,
+                    place = it,
                     marker = Marker(map)
                 )
             )
@@ -117,25 +118,26 @@ class Map(
     }
 
     override fun focusedDrawBookmark(place: Bookmark) {
-        fun moveMapToPlace() {
-            centerMapLocation = GeoPoint(place.lat, place.long)
-            zoom = MapConstants.DETAIL_ZOOM
-            map.controller.setCenter(centerMapLocation)
-            map.controller.setZoom(MapConstants.DETAIL_ZOOM)
-        }
-
-        clearPlaces()
-        foundedPlaces.add(
-            MapMarker(
-                bookmark = place,
-                marker = Marker(map)
-            )
-        )
-
-        moveMapToPlace()
-
-        drawCurrentPlaces()
-        drawCircleByRadius()
+        // TODO
+//        fun moveMapToPlace() {
+//            centerMapLocation = GeoPoint(place.lat, place.long)
+//            zoom = MapConstants.DETAIL_ZOOM
+//            map.controller.setCenter(centerMapLocation)
+//            map.controller.setZoom(MapConstants.DETAIL_ZOOM)
+//        }
+//
+//        clearPlaces()
+//        foundedPlaces.add(
+//            MapMarker(
+//                place = place,
+//                marker = Marker(map)
+//            )
+//        )
+//
+//        moveMapToPlace()
+//
+//        drawCurrentPlaces()
+//        drawCircleByRadius()
     }
 
     private fun drawCircleByRadius() {
@@ -239,9 +241,9 @@ class Map(
 
         configureSearchArea()
         if (foundedPlaces.isNotEmpty()) {
-            val places = arrayListOf<Bookmark>()
+            val places = arrayListOf<PlacesResponse>()
             foundedPlaces.forEach {
-                places.add(it.bookmark)
+                places.add(it.place)
             }
             drawFoundedPlaces(places)
         } else {

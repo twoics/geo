@@ -69,7 +69,7 @@ class SearchViewModel(
             mapDataTransfer.mapEventsFlow.collect {
                 when (it) {
                     is MapEvent.PeakPlace -> {
-                        transmitViewModel.set(it.bookmark)
+                        transmitViewModel.set(placesApi.getPlaceDetail(it.place))
                         navigation.navigate(Routes.DETAILS)
                     }
                 }
@@ -108,6 +108,7 @@ class SearchViewModel(
 //                    TODO
                     arrayListOf()
                 )
+                Log.d("DETAIL", placesApi.getPlaceDetail(places.first()).name)
             }
         }
     }

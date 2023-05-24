@@ -1,6 +1,7 @@
 package com.twoics.geo.api
 
 import android.util.Log
+import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.settings.Settings
 import okhttp3.HttpUrl
@@ -71,6 +72,10 @@ class PlacesApi : IPlacesApi {
             val place: JSONObject = json.getJSONObject(i)
 
             val prop = place.getJSONObject("properties")
+            val name = prop.getString("name")
+            if (name.isBlank()) {
+                continue
+            }
 
             val xid = prop.getString("xid")
             val kind = getKind(prop.getString("kinds"))
@@ -95,7 +100,7 @@ class PlacesApi : IPlacesApi {
         val urlBuilder = StringBuilder()
         urlBuilder
             .append(ApiConstant.ROOT_URL)
-            .append("en/")
+            .append("en/") // TODO LANGUAGE
             .append("places/radius?")
 
         val request = HttpUrl.parse(urlBuilder.toString())!!.newBuilder()
@@ -104,7 +109,7 @@ class PlacesApi : IPlacesApi {
             .addQueryParameter("lon", query.long.toString())
             .addQueryParameter("lat", query.lat.toString())
             .addEncodedQueryParameter("kinds", convertPlacesToParams(query.category))
-            .addEncodedQueryParameter("apikey", Settings.WEATHER_API_KEY)
+            .addEncodedQueryParameter("apikey", Settings.PLACES_API_KEY)
 
         val resultRequest = Request.Builder().url(request.build()).build()
         Log.d("REQUEST", resultRequest.toString())
@@ -120,5 +125,52 @@ class PlacesApi : IPlacesApi {
         }.start()
 
         return parsePlacesFromJSON(queue.take())
+    }
+
+    private fun parseDetailToPlace(jsonObject: JSONObject, placeResponse: PlacesResponse): Bookmark {
+        println(jsonObject)
+        val address = jsonObject.getJSONObject("address")
+        var description: String = "Empty description"
+        if (jsonObject.has("info")) {
+            description = jsonObject.getJSONObject("info").getString("descr")
+        }
+
+        return Bookmark(
+            name = jsonObject.getString("name"),
+            country = address.getString("country"),
+            city = address.getString("city"),
+            street = address.getString("road"),
+            house = address.getString("house_number"),
+            description = description,
+            type = placeResponse.type,
+            long = placeResponse.long,
+            lat = placeResponse.lat
+        )
+    }
+
+    override fun getPlaceDetail(response: PlacesResponse): Bookmark {
+        val urlBuilder = StringBuilder()
+        urlBuilder
+            .append(ApiConstant.ROOT_URL)
+            .append("en/")
+            .append("places/xid/")
+            .append(response.xid)
+        val request = HttpUrl.parse(urlBuilder.toString())!!.newBuilder()
+            .addQueryParameter("apikey", Settings.PLACES_API_KEY)
+
+        val resultRequest = Request.Builder().url(request.build()).build()
+        val queue = LinkedBlockingQueue<JSONObject>()
+        Thread {
+            client.newCall(resultRequest).execute().use { response ->
+                val body = response.body()!!.string()
+                val json = JSONObject(body)
+                queue.add(json)
+            }
+        }.start()
+
+        return parseDetailToPlace(
+            queue.take(),
+            placeResponse = response
+        )
     }
 }

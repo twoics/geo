@@ -1,5 +1,6 @@
 package com.twoics.geo.api
 
+import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
 
 class TestPlacesApi : IPlacesApi {
@@ -21,5 +22,9 @@ class TestPlacesApi : IPlacesApi {
 
     override fun getPlaces(query: PlaceRequest): ArrayList<PlacesResponse> {
         return PLACES
+    }
+
+    override fun getPlaceDetail(response: PlacesResponse): Bookmark {
+        TODO("Not yet implemented")
     }
 }
