@@ -81,15 +81,12 @@ class PlacesApi : IPlacesApi {
             val kind = getKind(prop.getString("kinds"))
             val geometry = place.getJSONObject("geometry")
             val coordinates = geometry.getJSONArray("coordinates")
-            val lat = coordinates.getDouble(0)
-            val long = coordinates.getDouble(1)
+            val long = coordinates.getDouble(0)
+            val lat = coordinates.getDouble(1)
 
             places.add(
                 PlacesResponse(
-                    lat = lat,
-                    long = long,
-                    xid = xid,
-                    type = kind
+                    lat = lat, long = long, xid = xid, type = kind
                 )
             )
         }
@@ -98,15 +95,11 @@ class PlacesApi : IPlacesApi {
 
     override fun getPlaces(query: PlaceRequest): ArrayList<PlacesResponse> {
         val urlBuilder = StringBuilder()
-        urlBuilder
-            .append(ApiConstant.ROOT_URL)
-            .append("en/") // TODO LANGUAGE
+        urlBuilder.append(ApiConstant.ROOT_URL).append("en/") // TODO LANGUAGE
             .append("places/radius?")
 
         val request = HttpUrl.parse(urlBuilder.toString())!!.newBuilder()
-        request
-            .addQueryParameter("radius", query.radius.toString())
-            .addQueryParameter("lon", query.long.toString())
+        request.addQueryParameter("radius", query.radius.toString()).addQueryParameter("lon", query.long.toString())
             .addQueryParameter("lat", query.lat.toString())
             .addEncodedQueryParameter("kinds", convertPlacesToParams(query.category))
             .addEncodedQueryParameter("apikey", Settings.PLACES_API_KEY)
@@ -128,19 +121,22 @@ class PlacesApi : IPlacesApi {
     }
 
     private fun parseDetailToPlace(jsonObject: JSONObject, placeResponse: PlacesResponse): Bookmark {
-        println(jsonObject)
+        fun getValueOrDefault(jsonObject: JSONObject, field: String): String {
+            return if (jsonObject.has(field)) jsonObject.getString(field) else "Undefined"
+        }
+
         val address = jsonObject.getJSONObject("address")
-        var description: String = "Empty description"
+        var description = "Empty description"
         if (jsonObject.has("info")) {
             description = jsonObject.getJSONObject("info").getString("descr")
         }
 
         return Bookmark(
-            name = jsonObject.getString("name"),
-            country = address.getString("country"),
-            city = address.getString("city"),
-            street = address.getString("road"),
-            house = address.getString("house_number"),
+            name = getValueOrDefault(jsonObject, "name"),
+            country = getValueOrDefault(address, "country"),
+            city = getValueOrDefault(address, "city"),
+            street = getValueOrDefault(address, "road"),
+            house = getValueOrDefault(address, "house_number"),
             description = description,
             type = placeResponse.type,
             long = placeResponse.long,
@@ -150,13 +146,9 @@ class PlacesApi : IPlacesApi {
 
     override fun getPlaceDetail(response: PlacesResponse): Bookmark {
         val urlBuilder = StringBuilder()
-        urlBuilder
-            .append(ApiConstant.ROOT_URL)
-            .append("en/")
-            .append("places/xid/")
-            .append(response.xid)
-        val request = HttpUrl.parse(urlBuilder.toString())!!.newBuilder()
-            .addQueryParameter("apikey", Settings.PLACES_API_KEY)
+        urlBuilder.append(ApiConstant.ROOT_URL).append("en/").append("places/xid/").append(response.xid)
+        val request =
+            HttpUrl.parse(urlBuilder.toString())!!.newBuilder().addQueryParameter("apikey", Settings.PLACES_API_KEY)
 
         val resultRequest = Request.Builder().url(request.build()).build()
         val queue = LinkedBlockingQueue<JSONObject>()
@@ -169,8 +161,7 @@ class PlacesApi : IPlacesApi {
         }.start()
 
         return parseDetailToPlace(
-            queue.take(),
-            placeResponse = response
+            queue.take(), placeResponse = response
         )
     }
 }

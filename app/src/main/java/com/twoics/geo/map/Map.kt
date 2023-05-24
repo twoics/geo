@@ -93,6 +93,8 @@ class Map(
         foundedPlaces.forEach {
             drawPlace(mapMarker = it)
         }
+
+        Log.d("FOUNDED PLACES", foundedPlaces.toString())
         map.invalidate()
     }
 

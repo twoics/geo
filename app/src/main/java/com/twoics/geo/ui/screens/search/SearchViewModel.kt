@@ -105,10 +105,9 @@ class SearchViewModel(
                 val places = placesApi.getPlaces(placeQuery)
                 Log.d("PLACES", places.toString())
                 map.drawFoundedPlaces(
-//                    TODO
-                    arrayListOf()
+                    places
                 )
-                Log.d("DETAIL", placesApi.getPlaceDetail(places.first()).name)
+//                Log.d("DETAIL", placesApi.getPlaceDetail(places.first()).name)
             }
         }
     }

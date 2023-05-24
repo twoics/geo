@@ -1,5 +1,6 @@
 package com.twoics.geo.ui.screens.details
 
+import android.widget.TextView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,6 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
+import androidx.core.text.HtmlCompat.fromHtml
 import com.twoics.geo.R
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.screen.IBottomBar
@@ -176,6 +180,15 @@ class DetailsScreen(
     private fun Description(
         description: String
     ) {
+        @Composable
+        fun HtmlText(html: String, modifier: Modifier = Modifier) {
+            AndroidView(
+                modifier = modifier,
+                factory = { context -> TextView(context) },
+                update = { it.text = fromHtml(html, FROM_HTML_MODE_COMPACT) }
+            )
+        }
+
         Text(
             modifier = Modifier.padding(sizes.descriptionTitlePadding),
             text = "Description",
@@ -183,9 +196,8 @@ class DetailsScreen(
             fontWeight = FontWeight.SemiBold
         )
         val scroll = rememberScrollState(0)
-        Text(
-            text = description,
-            color = Color.Gray,
+        HtmlText(
+            html = description,
             modifier = Modifier
                 .verticalScroll(scroll)
                 .padding(sizes.descriptionContentPadding)
