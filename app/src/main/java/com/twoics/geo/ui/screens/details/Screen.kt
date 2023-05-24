@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -140,9 +141,9 @@ class DetailsScreen(
         bookmark: Bookmark,
         onEvent: (DetailsEvent) -> Unit
     ) {
-        var buttonEnabled: Boolean = false
+        var placeFromDataBase = true
         if (bookmark.id == null) {
-            buttonEnabled = true
+            placeFromDataBase = false
         }
 
         Column(
@@ -154,7 +155,7 @@ class DetailsScreen(
                 elevation = ButtonDefaults.elevation(0.dp, 0.dp),
 
                 onClick = {
-                    if (buttonEnabled) {
+                    if (!placeFromDataBase) {
                         onEvent(
                             DetailsEvent.LikeButtonClick(
                                 bookmark = bookmark
@@ -168,10 +169,9 @@ class DetailsScreen(
                         )
                     }
                 },
-                enabled = buttonEnabled
 
             ) {
-                Icon(Icons.Filled.Favorite, contentDescription = null)
+                Icon(if (placeFromDataBase) Icons.Filled.Map else Icons.Filled.Favorite, contentDescription = null)
             }
         }
     }
