@@ -1,10 +1,10 @@
 package com.twoics.geo.api
 
 import com.twoics.geo.data.models.BookmarkType
-import com.twoics.geo.utils.Languages
+import com.twoics.geo.settings.Languages
 
 
-data class WeatherQuery(
+data class PlaceRequest(
     val lat: Double,
     val long: Double,
     val radius: Double,

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.twoics.geo.api.TestWeatherApi
+import com.twoics.geo.api.PlacesApi
 import com.twoics.geo.data.repository.TestBookmarksRepository
 import com.twoics.geo.map.Map
 import com.twoics.geo.map.MapDataTransfer
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val repository = TestBookmarksRepository()
         val mapDataTransfer = MapDataTransfer()
-        val weatherApi = TestWeatherApi()
+        val weatherApi = PlacesApi()
 
         val map = Map(
             defaultAreaRadius = 1000.0,
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                                     map = map,
                                     mapDataTransfer = mapDataTransfer,
                                     transmitViewModel = TransmitBookmarkViewModel,
-                                    weatherApi = weatherApi
+                                    placesApi = weatherApi
                                 ),
                                 bottomBar = bottomBar
                             ).Screen()

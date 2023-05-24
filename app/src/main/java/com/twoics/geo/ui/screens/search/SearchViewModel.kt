@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.twoics.geo.api.IWeatherApi
-import com.twoics.geo.api.WeatherQuery
+import com.twoics.geo.api.IPlacesApi
+import com.twoics.geo.api.PlaceRequest
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.map.IMap
@@ -16,9 +16,9 @@ import com.twoics.geo.map.IMapDataTransfer
 import com.twoics.geo.map.MapEvent
 import com.twoics.geo.nav.INavigation
 import com.twoics.geo.nav.Routes
+import com.twoics.geo.settings.Languages
 import com.twoics.geo.ui.shared.dto.IBookmarkTransmit
 import com.twoics.geo.ui.shared.event.UiEvent
-import com.twoics.geo.utils.Languages
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ class SearchViewModel(
     private val map: IMap,
     private val mapDataTransfer: IMapDataTransfer,
     private var transmitViewModel: IBookmarkTransmit,
-    private val weatherApi: IWeatherApi
+    private val placesApi: IPlacesApi
 ) : ViewModel() {
     private var _radius by mutableStateOf(Float.MIN_VALUE)
     private var _selectedTypes = arrayListOf<BookmarkType>()
@@ -95,15 +95,18 @@ class SearchViewModel(
             is SearchEvent.OnSearchClick -> {
                 sendUiEvent(UiEvent.ShowSnackbar("Empty amogus"))
                 Log.d("SEARCH", "\tCenter: ${map.centerMapLocation}\n\tRadius: ${map.areaRadius}")
-                val weatherQuery = WeatherQuery(
+                val placeQuery = PlaceRequest(
                     lat = map.centerMapLocation.latitude,
                     long = map.centerMapLocation.longitude,
                     radius = map.areaRadius,
                     category = _selectedTypes,
-                    language = Languages.ENGLISH
+                    language = Languages.EN
                 )
+                val places = placesApi.getPlaces(placeQuery)
+                Log.d("PLACES", places.toString())
                 map.drawFoundedPlaces(
-                    weatherApi.getPlaces(weatherQuery)
+//                    TODO
+                    arrayListOf()
                 )
             }
         }

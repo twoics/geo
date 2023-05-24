@@ -68,4 +68,9 @@ dependencies {
     // OSM
     implementation 'org.osmdroid:osmdroid-android:6.1.16'
 
+    // Dotenv
+    implementation 'io.github.cdimascio:dotenv-kotlin:6.4.1'
+
+    // Query
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
 }
