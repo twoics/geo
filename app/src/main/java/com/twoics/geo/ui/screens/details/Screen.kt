@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,32 +22,30 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
 import androidx.core.text.HtmlCompat.fromHtml
-import com.twoics.geo.R
+import coil.compose.rememberAsyncImagePainter
 import com.twoics.geo.data.models.Bookmark
 import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
 import com.twoics.geo.utils.PlaceIcons
 
 class DetailsScreen(
-    private var viewModel: DetailsViewModel,
-    private val bottomBar: IBottomBar
+    private var viewModel: DetailsViewModel, private val bottomBar: IBottomBar
 ) : IScreen {
     private lateinit var sizes: DetailScreenSizes
 
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Screen() {
+        val bookmark = viewModel.bookmark
         MaterialTheme {
             BoxWithConstraints {
                 sizes = DetailScreenSizes(this.maxWidth)
 
-                Scaffold(
-                    topBar = {
-                        TopBar(viewModel::onEvent)
-                    },
-                    bottomBar = {
-                        bottomBar.ComposableBottomBar()
-                    }
+                Scaffold(topBar = {
+                    TopBar(viewModel::onEvent)
+                }, bottomBar = {
+                    bottomBar.ComposableBottomBar()
+                }
 
                 ) { contentPadding ->
                     // Screen content
@@ -62,18 +59,15 @@ class DetailsScreen(
                         BottomSheetScaffold(
                             scaffoldState = scaffoldState,
                             sheetContent = {
-                                viewModel.bookmark?.let { SheetContent(it) }
+                                bookmark?.let { SheetContent(it) }
                             },
 
                             sheetPeekHeight = sizes.sheetPeakHeight,
                             sheetShape = RoundedCornerShape(
-                                sizes.sheetCorner,
-                                sizes.sheetCorner,
-                                0.dp,
-                                0.dp
+                                sizes.sheetCorner, sizes.sheetCorner, 0.dp, 0.dp
                             ),
                         ) {
-                            BackgroundContent()
+                            bookmark?.let { it1 -> BackgroundContent(it1) }
                         }
                     }
                 }
@@ -92,9 +86,7 @@ class DetailsScreen(
                 }) {
                     Icon(Icons.Filled.ArrowBack, null)
                 }
-            },
-                modifier = Modifier
-                    .fillMaxWidth()
+            }, modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -102,8 +94,7 @@ class DetailsScreen(
     @Composable
     private fun TypeIcon(bookmark: Bookmark) {
         Column(
-            modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp),
-            horizontalAlignment = Alignment.Start
+            modifier = Modifier.padding(0.dp, 0.dp, sizes.iconRightPadding, 0.dp), horizontalAlignment = Alignment.Start
         ) {
             Icon(
                 painter = painterResource(PlaceIcons.getIconId(bookmark.type)),
@@ -116,30 +107,21 @@ class DetailsScreen(
 
     @Composable
     private fun PlaceInfo(
-        name: String,
-        city: String,
-        country: String,
-        street: String,
-        house: String
+        name: String, city: String, country: String, street: String, house: String
     ) {
         Column {
             Text(
-                text = name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold
             )
             Text(
-                text = "$country, $city, $street $house",
-                fontSize = 16.sp,
-                color = Color.Gray
+                text = "$country, $city, $street $house", fontSize = 16.sp, color = Color.Gray
             )
         }
     }
 
     @Composable
     private fun LikeButton(
-        bookmark: Bookmark,
-        onEvent: (DetailsEvent) -> Unit
+        bookmark: Bookmark, onEvent: (DetailsEvent) -> Unit
     ) {
         var placeFromDataBase = true
         if (bookmark.id == null) {
@@ -147,9 +129,7 @@ class DetailsScreen(
         }
 
         Column(
-            Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.End
+            Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End
         ) {
             Button(
                 elevation = ButtonDefaults.elevation(0.dp, 0.dp),
@@ -169,9 +149,11 @@ class DetailsScreen(
                         )
                     }
                 },
-
+                // TODO
+                enabled = !placeFromDataBase
             ) {
-                Icon(if (placeFromDataBase) Icons.Filled.Map else Icons.Filled.Favorite, contentDescription = null)
+//                Icon(if (placeFromDataBase) Icons.Filled.Map else Icons.Filled.Favorite, contentDescription = null)
+                Icon(Icons.Filled.Favorite, contentDescription = null)
             }
         }
     }
@@ -182,11 +164,9 @@ class DetailsScreen(
     ) {
         @Composable
         fun HtmlText(html: String, modifier: Modifier = Modifier) {
-            AndroidView(
-                modifier = modifier,
+            AndroidView(modifier = modifier,
                 factory = { context -> TextView(context) },
-                update = { it.text = fromHtml(html, FROM_HTML_MODE_COMPACT) }
-            )
+                update = { it.text = fromHtml(html, FROM_HTML_MODE_COMPACT) })
         }
 
         Text(
@@ -197,8 +177,7 @@ class DetailsScreen(
         )
         val scroll = rememberScrollState(0)
         HtmlText(
-            html = description,
-            modifier = Modifier
+            html = description, modifier = Modifier
                 .verticalScroll(scroll)
                 .padding(sizes.descriptionContentPadding)
         )
@@ -210,13 +189,11 @@ class DetailsScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(),
-                backgroundColor = Color.White
+                    .fillMaxHeight(), backgroundColor = Color.White
             ) {
                 Column {
                     Row(
-                        Modifier
-                            .padding(sizes.contentPaddings)
+                        Modifier.padding(sizes.contentPaddings)
                     ) {
 
                         TypeIcon(bookmark)
@@ -244,14 +221,14 @@ class DetailsScreen(
     }
 
     @Composable
-    private fun BackgroundContent() {
+    private fun BackgroundContent(bookmark: Bookmark) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(sizes.backgroundShare)
         ) {
             Image(
-                painterResource(R.drawable.backdata),
+                painter = rememberAsyncImagePainter(bookmark.imgURL),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

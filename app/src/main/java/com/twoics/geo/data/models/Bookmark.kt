@@ -25,5 +25,6 @@ data class Bookmark(
     var lat: Double,
     var long: Double,
     var description: String,
-    var type: BookmarkType
+    var type: BookmarkType,
+    var imgURL: String = "https://img.freepik.com/free-vector/hand-drawn-404-error_23-2147730749.jpg?w=2000"
 ) : Parcelable
