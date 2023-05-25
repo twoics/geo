@@ -121,7 +121,7 @@ class PlacesApi : IPlacesApi {
     }
 
     private fun parseDetailToPlace(jsonObject: JSONObject, placeResponse: PlacesResponse): Bookmark {
-        fun getValueOrUndefinded(jsonObject: JSONObject, field: String): String {
+        fun getValueOrUndefined(jsonObject: JSONObject, field: String): String {
             return if (jsonObject.has(field)) jsonObject.getString(field) else "Undefined"
         }
 
@@ -132,11 +132,11 @@ class PlacesApi : IPlacesApi {
         }
 
         val bookmark = Bookmark(
-            name = getValueOrUndefinded(jsonObject, "name"),
-            country = getValueOrUndefinded(address, "country"),
-            city = getValueOrUndefinded(address, "city"),
-            street = getValueOrUndefinded(address, "road"),
-            house = getValueOrUndefinded(address, "house_number"),
+            name = getValueOrUndefined(jsonObject, "name"),
+            country = getValueOrUndefined(address, "country"),
+            city = getValueOrUndefined(address, "city"),
+            street = getValueOrUndefined(address, "road"),
+            house = getValueOrUndefined(address, "house_number"),
             description = description,
             type = placeResponse.type,
             long = placeResponse.long,
