@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
 import com.twoics.geo.api.PlacesApi
-import com.twoics.geo.data.repository.TestBookmarksRepository
+import com.twoics.geo.data.database.AppDatabase
+import com.twoics.geo.data.repository.BookmarksRepository
 import com.twoics.geo.map.Map
 import com.twoics.geo.map.MapDataTransfer
 import com.twoics.geo.nav.Navigation
@@ -29,9 +31,19 @@ import com.twoics.geo.ui.theme.GeoTheme
 import org.osmdroid.util.GeoPoint
 
 class MainActivity : ComponentActivity() {
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "places.db"
+        ).allowMainThreadQueries().build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
-        val repository = TestBookmarksRepository()
+
+        val repository = BookmarksRepository(db.bookmarkDao())
         val mapDataTransfer = MapDataTransfer()
         val weatherApi = PlacesApi()
 

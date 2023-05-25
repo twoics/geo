@@ -37,8 +37,8 @@ val FOCUSED_PLACE = Bookmark(
     city = "Красноярск",
     street = "Ленина",
     house = "11",
-    lat = 56.0,
-    long = 91.0,
+    latitude = 56.0,
+    longitude = 91.0,
     description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
     type = BookmarkType.FOOD
 )

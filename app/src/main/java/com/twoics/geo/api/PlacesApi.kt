@@ -139,8 +139,8 @@ class PlacesApi : IPlacesApi {
             house = getValueOrUndefined(address, "house_number"),
             description = description,
             type = placeResponse.type,
-            long = placeResponse.long,
-            lat = placeResponse.lat
+            longitude = placeResponse.long,
+            latitude = placeResponse.lat
         )
         if (jsonObject.has("image")) {
             bookmark.imgURL = jsonObject.getString("image")

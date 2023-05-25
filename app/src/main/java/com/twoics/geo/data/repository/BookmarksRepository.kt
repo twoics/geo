@@ -1,10 +1,10 @@
 package com.twoics.geo.data.repository
 
-import com.twoics.geo.data.dao.IBookmarksDao
+import com.twoics.geo.data.dao.BookmarksDao
 import com.twoics.geo.data.models.Bookmark
 
 class BookmarksRepository(
-    private val dao: IBookmarksDao
+    private val dao: BookmarksDao
 ) : IBookmarksRepository {
     override suspend fun insertBookmark(bookmark: Bookmark) {
         dao.insertBookmark(bookmark)
