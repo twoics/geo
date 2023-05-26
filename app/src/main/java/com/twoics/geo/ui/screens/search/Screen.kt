@@ -119,7 +119,7 @@ class SearchScreen(
                     ) {
                         Text("Search")
                         Row() {
-                            val eyeOpen = remember { mutableStateOf(true) }
+                            val eyeOpen = remember { mutableStateOf(viewModel.isSearchAreaHidden) }
 
                             IconButton(onClick = {
                                 viewModel.onEvent(SearchEvent.CleanMapClick)

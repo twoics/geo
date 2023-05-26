@@ -61,6 +61,9 @@ class SearchViewModel(
         @Composable
         get() = map.redrawMap()
 
+    val isSearchAreaHidden: Boolean
+        get() = map.isShowSearchArea
+
     val maxSearchRadius = SearchModelConstant.MAX_SEARCH_AREA_METERS
     val minSearchRadius = SearchModelConstant.MIN_SEARCH_AREA_METERS
 

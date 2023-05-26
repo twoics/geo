@@ -57,7 +57,11 @@ class Map(
     private var zoom: Double = MapConstants.START_ZOOM
 
     override var areaRadius: Double = defaultAreaRadius
+
     override var centerMapLocation: GeoPoint = defaultMapLocation
+        private set
+
+    override var isShowSearchArea = true
         private set
 
     private fun drawCurrentPlaces() {
@@ -143,6 +147,7 @@ class Map(
     }
 
     override fun showSearchArea(boolean: Boolean) {
+        isShowSearchArea = boolean
         searchAreaPolygon.isVisible = boolean
         map.invalidate()
     }
@@ -240,13 +245,17 @@ class Map(
             map.overlays.add(searchAreaPolygon)
         }
 
+        fun setSearchAreaVisibility() {
+            searchAreaPolygon.isVisible = isShowSearchArea
+        }
+
         setScrollBorders()
         setScaleBorders()
         makeTouchable()
         setMapView()
         setMapListeners()
-
         configureSearchArea()
+        setSearchAreaVisibility()
         if (foundedPlaces.isNotEmpty()) {
             val places = arrayListOf<PlacesResponse>()
             foundedPlaces.forEach {

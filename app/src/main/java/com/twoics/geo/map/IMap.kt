@@ -9,6 +9,7 @@ import org.osmdroid.views.MapView
 interface IMap {
     val centerMapLocation: GeoPoint
     val areaRadius: Double
+    val isShowSearchArea: Boolean
 
     fun drawFoundedPlaces(places: ArrayList<PlacesResponse>)
     fun clearPlaces()
