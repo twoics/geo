@@ -1,32 +1,55 @@
 package com.twoics.geo.ui.screens.search
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.twoics.geo.R
+import androidx.compose.ui.viewinterop.AndroidView
 import com.twoics.geo.data.models.BookmarkType
-import com.twoics.geo.ui.shared.AppBar
-import com.twoics.geo.ui.shared.BottomBar
-import com.twoics.geo.ui.shared.IScreen
-import com.twoics.geo.utils.UiEvent
+import com.twoics.geo.ui.shared.screen.IBottomBar
+import com.twoics.geo.ui.shared.screen.IScreen
+import com.twoics.geo.utils.PlaceIcons
+import org.osmdroid.views.MapView
 
+
+private object ButtonsIcons {
+    val SPORT_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.SPORT))
+    val NATURE_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.NATURE))
+    val FOOD_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.FOOD))
+    val CULTURE_ICON: Painter
+        @Composable
+        get() = painterResource(PlaceIcons.getIconId(BookmarkType.CULTURE))
+}
+
+private object ButtonsColors {
+    val SPORT_BUTTON = Color(0xFFEEF7FF)
+    val NATURE_BUTTON = Color(0xFFEAFFF2)
+    val FOOD_BUTTON = Color(0xFFFFF4E8)
+    val CULTURE_BUTTON = Color(0xFFFFE9E9)
+}
 
 class SearchScreen(
     private var viewModel: SearchViewModel,
-    private var onNavigate: (UiEvent.Navigate) -> Unit,
+    private val bottomBar: IBottomBar
 ) : IScreen {
 
     private lateinit var sizes: SearchScreenSizes
@@ -34,25 +57,18 @@ class SearchScreen(
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Screen() {
-        LaunchedEffect(key1 = true) {
-            viewModel.uiEvent.collect { event ->
-                when (event) {
-                    is UiEvent.Navigate -> onNavigate(event)
-                    else -> Unit
-                }
-            }
-        }
-
+        val scaffoldState = rememberScaffoldState()
         MaterialTheme {
             BoxWithConstraints {
                 sizes = SearchScreenSizes(this.maxWidth)
                 Scaffold(
                     topBar = {
-                        AppBar()
+                        TopBar()
                     },
                     bottomBar = {
-                        BottomBar()
-                    }
+                        bottomBar.ComposableBottomBar()
+                    },
+                    scaffoldState = scaffoldState
 
                 ) { contentPadding ->
                     // Screen content
@@ -63,11 +79,11 @@ class SearchScreen(
                         val sheetState = rememberBottomSheetState(
                             initialValue = BottomSheetValue.Expanded
                         )
-                        val scaffoldState = rememberBottomSheetScaffoldState(
+                        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
                             bottomSheetState = sheetState
                         )
                         BottomSheetScaffold(
-                            scaffoldState = scaffoldState,
+                            scaffoldState = bottomSheetScaffoldState,
                             sheetContent = {
                                 SheetContent()
                             },
@@ -79,11 +95,52 @@ class SearchScreen(
                                 0.dp
                             ),
                         ) {
-                            BackgroundContent()
+                            MapContent(
+                                Modifier.fillMaxSize(),
+                                viewModel.mapView
+                            )
                         }
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun TopBar() {
+        Column {
+            TopAppBar(
+                title = {
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Text("Search")
+                        Row() {
+                            val eyeOpen = remember { mutableStateOf(viewModel.isSearchAreaHidden) }
+
+                            IconButton(onClick = {
+                                viewModel.onEvent(SearchEvent.CleanMapClick)
+                            }) {
+                                Icon(Icons.Filled.Delete, contentDescription = "Clear map")
+                            }
+                            IconButton(onClick = {
+                                eyeOpen.value = !eyeOpen.value
+                                viewModel.onEvent(SearchEvent.HideMapAreaClick(eyeOpen.value))
+                            }) {
+                                Icon(
+                                    if (eyeOpen.value) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = "Hide radius"
+                                )
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
     }
 
@@ -130,55 +187,6 @@ class SearchScreen(
     }
 
     @Composable
-    private fun CultureButton() {
-        val icon = painterResource(id = R.drawable.arch)
-        val backgroundColor = Color(0xFFFFE9E9)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.CULTURE
-        )
-    }
-
-    @Composable
-    private fun FoodButton() {
-        val icon = painterResource(id = R.drawable.food)
-        val backgroundColor = Color(0xFFFFF4E8)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.FOOD
-        )
-    }
-
-    @Composable
-    private fun NatureButton() {
-        val icon = painterResource(id = R.drawable.nature)
-        val backgroundColor = Color(0xFFEAFFF2)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.NATURE
-        )
-    }
-
-    @Composable
-    private fun SportButton() {
-        val icon = painterResource(id = R.drawable.sport)
-        val backgroundColor = Color(0xFFEEF7FF)
-
-        FilterButton(
-            icon = icon,
-            backgroundColor = backgroundColor,
-            BookmarkType.SPORT
-        )
-    }
-
-
-    @Composable
     private fun RadiusSlider() {
         Column(
             modifier = Modifier.padding(sizes.sliderHorizontalPadding, 0.dp)
@@ -203,12 +211,12 @@ class SearchScreen(
             {
                 // TODO MIN MAX from ViewModel
                 Text(
-                    text = "50m",
+                    text = "${viewModel.minSearchRadius}m",
                     modifier = Modifier.padding(0.dp),
                     color = Color.Gray
                 )
                 Text(
-                    text = "2000m",
+                    text = "${viewModel.maxSearchRadius}m",
                     modifier = Modifier.padding(0.dp),
                     color = Color.Gray
                 )
@@ -258,10 +266,27 @@ class SearchScreen(
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    CultureButton()
-                    FoodButton()
-                    NatureButton()
-                    SportButton()
+
+                    FilterButton(
+                        icon = ButtonsIcons.CULTURE_ICON,
+                        backgroundColor = ButtonsColors.CULTURE_BUTTON,
+                        bookmarkType = BookmarkType.CULTURE
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.NATURE_ICON,
+                        backgroundColor = ButtonsColors.NATURE_BUTTON,
+                        bookmarkType = BookmarkType.NATURE
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.SPORT_ICON,
+                        backgroundColor = ButtonsColors.SPORT_BUTTON,
+                        bookmarkType = BookmarkType.SPORT
+                    )
+                    FilterButton(
+                        icon = ButtonsIcons.FOOD_ICON,
+                        backgroundColor = ButtonsColors.FOOD_BUTTON,
+                        bookmarkType = BookmarkType.FOOD
+                    )
                 }
 
                 RadiusSlider()
@@ -271,19 +296,19 @@ class SearchScreen(
     }
 
     @Composable
-    private fun BackgroundContent() {
+    private fun MapContent(
+        modifier: Modifier,
+        mapViewState: MapView,
+        onLoad: ((map: MapView) -> Unit)? = null
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
         ) {
-            Image(
-                painterResource(R.drawable.map),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(sizes.backgroundHeight)
-            )
+            AndroidView(
+                { mapViewState },
+                modifier
+            ) { mapView -> onLoad?.invoke(mapView) }
         }
     }
 }

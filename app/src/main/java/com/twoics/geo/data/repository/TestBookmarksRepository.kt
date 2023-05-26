@@ -12,57 +12,83 @@ class TestBookmarksRepository : IBookmarksRepository {
             city = "Красноярск",
             street = "Мира",
             house = "24",
-            lat = 11,
-            long = 22,
-            description = "Test",
+            latitude = 11.0,
+            longitude = 22.0,
+            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit Morbi ac massa vehicula magna fringilla tempus.Morbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempusMorbi ac massa vehicula magna fringilla tempus..",
             type = BookmarkType.CULTURE
         ),
         Bookmark(
-            id = 1,
+            id = 2,
             name = "Vo Gan Udon",
             country = "Россиия",
             city = "Красноярск",
             street = "Ленина",
             house = "11",
-            lat = 25,
-            long = 65,
+            latitude = 25.0,
+            longitude = 65.0,
             description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
             type = BookmarkType.FOOD
         ),
         Bookmark(
-            id = 1,
+            id = 3,
             name = "Столбы",
             country = "Россиия",
             city = "Красноярск",
             street = "Красной армии",
             house = "125",
-            lat = 112,
-            long = 252,
+            latitude = 112.0,
+            longitude = 252.0,
             description = "Test Test Test Test Test Test Test Test Test Test Test Test Test",
             type = BookmarkType.NATURE
-        ), Bookmark(
-            id = 1,
+        ),
+        Bookmark(
+            id = 4,
             name = "ИКИТ",
             country = "Россиия",
             city = "Красноярск",
             street = "Академика Киренского",
             house = "24",
-            lat = 15,
-            long = 62,
+            latitude = 15.0,
+            longitude = 62.0,
             description = "Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test",
             type = BookmarkType.SPORT
-        ),
+        )
     )
 
     override suspend fun insertBookmark(bookmark: Bookmark) {
+        fun maxId(): Int {
+            var min = bookmarks.first().id
+            bookmarks.forEach { bookmark ->
+                if (bookmark.id!! < min!!) {
+                    min = bookmark.id
+                }
+            }
+            return min!!
+        }
+
+        bookmark.id = maxId() + 1
         bookmarks.add(bookmark);
     }
 
     override suspend fun deleteBookmark(bookmark: Bookmark) {
-        this.bookmarks.drop(bookmark.id);
+        val deleteMark: Bookmark = bookmark.id?.let { get(it) } ?: return
+
+        this.bookmarks.removeAll {
+            it.id == deleteMark.id
+        }
     }
 
     override suspend fun getById(id: Int): Bookmark? {
-        return this.bookmarks[id];
+        return get(id)
+    }
+
+    override fun getAll(): List<Bookmark> {
+        return this.bookmarks
+    }
+
+    private fun get(id: Int): Bookmark? {
+        return this.bookmarks.find {
+            it.id == id
+        }
     }
 }
