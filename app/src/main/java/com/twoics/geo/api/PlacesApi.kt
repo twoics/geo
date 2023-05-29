@@ -95,12 +95,13 @@ class PlacesApi : IPlacesApi {
 
     override fun getPlaces(query: PlaceRequest): ArrayList<PlacesResponse> {
         val urlBuilder = StringBuilder()
-        urlBuilder.append(ApiConstant.ROOT_URL).append("en/") // TODO LANGUAGE
+        urlBuilder.append(ApiConstant.ROOT_URL).append("ru/") // TODO LANGUAGE
             .append("places/radius?")
 
         val request = urlBuilder.toString().toHttpUrlOrNull()!!.newBuilder()
         request.addQueryParameter("radius", query.radius.toString()).addQueryParameter("lon", query.long.toString())
             .addQueryParameter("lat", query.lat.toString())
+            .addQueryParameter("rate", query.minRate.toString())
             .addEncodedQueryParameter("kinds", convertPlacesToParams(query.category))
             .addEncodedQueryParameter("apikey", Settings.PLACES_API_KEY)
 

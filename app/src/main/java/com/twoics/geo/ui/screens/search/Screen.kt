@@ -21,6 +21,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.twoics.geo.data.models.BookmarkType
 import com.twoics.geo.ui.shared.screen.IBottomBar
 import com.twoics.geo.ui.shared.screen.IScreen
+import com.twoics.geo.ui.theme.CULTURE_COLOR
+import com.twoics.geo.ui.theme.FOOD_COLOR
+import com.twoics.geo.ui.theme.NATURE_COLOR
+import com.twoics.geo.ui.theme.SPORT_COLOR
 import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.views.MapView
 
@@ -38,13 +42,6 @@ private object ButtonsIcons {
     val CULTURE_ICON: Painter
         @Composable
         get() = painterResource(PlaceIcons.getIconId(BookmarkType.CULTURE))
-}
-
-private object ButtonsColors {
-    val SPORT_BUTTON = Color(0xFFEEF7FF)
-    val NATURE_BUTTON = Color(0xFFEAFFF2)
-    val FOOD_BUTTON = Color(0xFFFFF4E8)
-    val CULTURE_BUTTON = Color(0xFFFFE9E9)
 }
 
 class SearchScreen(
@@ -269,22 +266,22 @@ class SearchScreen(
 
                     FilterButton(
                         icon = ButtonsIcons.CULTURE_ICON,
-                        backgroundColor = ButtonsColors.CULTURE_BUTTON,
+                        backgroundColor = CULTURE_COLOR,
                         bookmarkType = BookmarkType.CULTURE
                     )
                     FilterButton(
                         icon = ButtonsIcons.NATURE_ICON,
-                        backgroundColor = ButtonsColors.NATURE_BUTTON,
+                        backgroundColor = NATURE_COLOR,
                         bookmarkType = BookmarkType.NATURE
                     )
                     FilterButton(
                         icon = ButtonsIcons.SPORT_ICON,
-                        backgroundColor = ButtonsColors.SPORT_BUTTON,
+                        backgroundColor = SPORT_COLOR,
                         bookmarkType = BookmarkType.SPORT
                     )
                     FilterButton(
                         icon = ButtonsIcons.FOOD_ICON,
-                        backgroundColor = ButtonsColors.FOOD_BUTTON,
+                        backgroundColor = FOOD_COLOR,
                         bookmarkType = BookmarkType.FOOD
                     )
                 }

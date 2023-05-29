@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.twoics.geo.R
 import com.twoics.geo.api.PlacesResponse
 import com.twoics.geo.data.models.Bookmark
+import com.twoics.geo.utils.PlaceIcons
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.DelayedMapListener
@@ -79,10 +80,10 @@ class Map(
             fun setPlaceIcon(mapMarker: MapMarker) {
                 val context = map.context
                 val place = mapMarker.place
-//                TODO
-//                val icon = PlaceIcons.getMapIcon(place, context)
-//                mapMarker.marker.icon = icon
-//                mapMarker.marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+                val icon = PlaceIcons.getMapIcon(place.type, context)
+
+                mapMarker.marker.icon = icon
+                mapMarker.marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             }
 
             val marker = mapMarker.marker
