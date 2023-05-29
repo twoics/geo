@@ -8,6 +8,7 @@ data class PlaceRequest(
     val lat: Double,
     val long: Double,
     val radius: Double,
+    val minRate: Int = 1,
     val category: ArrayList<BookmarkType>,
     val language: Languages
 )
